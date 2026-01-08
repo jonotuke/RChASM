@@ -3,3 +3,9 @@
 ^LICENSE\.md$
 ^\.github$
 ^README\.Rmd$
+RChASM.code-workspace
+^dev/
+^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

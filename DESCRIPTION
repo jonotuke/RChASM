@@ -2,9 +2,57 @@ Package: RChASM
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    c(
+    person(
+      given = "Jono", 
+      family = "Tuke", 
+      email = "simon.tuke@adelaide.edu.au", 
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-1688-8951")
+    ), 
+    person(
+      given = "Adam B.", 
+      family = "Rohrlach",
+      email = "adam.rohrlach@adelaide.edu.au", 
+      role = "aut",
+      comment = c(ORCID = "0000-0002-4204-5018")
+    ), 
+    person(
+      given = "Wolfgang", 
+      family = "Haak",
+      email = "wolfgang_haak@eva.mpg.de", 
+      role = "aut",
+      comment = c(ORCID = "0000-0003-2475-2007")
+    )
+    )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Imports: 
+    checkmate,
+    cowplot,
+    dplyr,
+    EnvStats,
+    ggplot2,
+    ggrepel,
+    ggsci,
+    ggstar,
+    magrittr,
+    matrixStats,
+    mclust,
+    rstatix,
+    sirt,
+    stringr,
+    tibble,
+    tidyr
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    extraDistr
+VignetteBuilder: knitr
+Depends:
+    R (>= 3.5.0)
+URL: https://jonotuke.github.io/RChASM/
