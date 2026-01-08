@@ -1,21 +1,21 @@
 Package: RChASM
-Title: What the Package Does (One Line, Title Case)
+Title: RChASM: A Statistically Rigorous Method for the Detection of Chromosomal Aneuploidies in Ancient DNA Studies
 Version: 0.0.0.9000
 Authors@R: 
     c(
+      person(
+        given = "Adam B.", 
+        family = "Rohrlach",
+        email = "adam.rohrlach@adelaide.edu.au", 
+        role = c("aut"),
+        comment = c(ORCID = "0000-0002-4204-5018")
+      ), 
     person(
       given = "Jono", 
       family = "Tuke", 
       email = "simon.tuke@adelaide.edu.au", 
       role = c("aut", "cre"),
       comment = c(ORCID = "0000-0002-1688-8951")
-    ), 
-    person(
-      given = "Adam B.", 
-      family = "Rohrlach",
-      email = "adam.rohrlach@adelaide.edu.au", 
-      role = "aut",
-      comment = c(ORCID = "0000-0002-4204-5018")
     ), 
     person(
       given = "Wolfgang", 
@@ -25,7 +25,7 @@ Authors@R:
       comment = c(ORCID = "0000-0003-2475-2007")
     )
     )
-Description: What the package does (one paragraph).
+Description: RChASM is an R implementation of ChASM (Chromosomal Aneuploidy Screening Methodology): a statistically rigorous Bayesian approach for screening data sets for automsomal and sex chromosomal aneuploidies. RChASM takes as input the number of (deduplicated) reads mapping to chromosomes 1-22 and the X and Y chromosomes, and models these using a Dirichlet-multinomial distribution. From this, RChASM returns posterior probabilities of sex chromosomal karyotypes (XX, XY, XXY, XYY, XXX and X) and full automsomal aneuploidies (trisomy 13, tirsomy 18 and trisomy 21). RChASM also returns two diagnostic statistics: (i) a posterior probability addressing whether contamination between XX and XY may explain the observed sex chromosomal aneuploidy, and (ii) a chi-sqaured statistic measuring whether the observed read counts are too divergent from the underlying distribution (and may represent abnormal sequencing/quality issues).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
