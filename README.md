@@ -38,9 +38,4 @@ pak::pak("jonotuke/RChASM")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(RChASM)
-## basic example code
-```
+Please see `vignette("example_analysis")` for a tutorial
