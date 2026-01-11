@@ -2,4 +2,5 @@
 
 ### All vignettes
 
-- [example_analysis](https://jonotuke.github.io/RChASM/articles/example_analysis.md):
+- [Example ChASM Analysis Using Example
+  Data](https://jonotuke.github.io/RChASM/articles/example_analysis.md):

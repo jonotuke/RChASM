@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>example_analysis • RChASM</title>
+<title>Example ChASM Analysis Using Example Data • RChASM</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="example_analysis">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Example ChASM Analysis Using Example Data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,7 +33,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/example_analysis.html">example_analysis</a></li>
+<li><a class="dropdown-item" href="../articles/example_analysis.html">Example ChASM Analysis Using Example Data</a></li>
   </ul>
 </li>
       </ul>
@@ -54,7 +54,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>example_analysis</h1>
+      <h1>Example ChASM Analysis Using Example Data</h1>
             
       
 
@@ -71,15 +71,81 @@
 <span><span class="co">#&gt; Type 'citation("mclust")' for citing this R package in publications.</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data</span><span class="op">)</span></span></code></pre></div>
+<p>We begin with the in-built example data. However, any data set can be
+used as long as: the first column gives the sample IDs, and there are
+read counts for each chromosome (excluding MT) with column headers
+“chr1”, “chr2”,..,“chr22” and “X” and “Y”.</p>
+<p>At this stage, if you have mixed data that uses different sequencing
+protocols, you can include this in a column titled “protocol”. If this
+is not included, the function will assume each row represents data using
+the same sequencing protocol (and assigns a column with the entry
+“default”). Essentially, RChASM treats the different protocols as
+separate analyses anyway.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># An example of data that RChASM analyses (omitting columns for chromosomes 3 to 21).</span></span>
+<span><span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sample</span>,<span class="va">protocol</span>,<span class="va">chr1</span>,<span class="va">chr2</span>,<span class="va">chr22</span>,<span class="va">X</span>,<span class="va">Y</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">#&gt;   sample  protocol    chr1  chr2 chr22     X     Y</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Ind_1_1 Protocol 1  <span style="text-decoration: underline;">7</span>471  <span style="text-decoration: underline;">7</span>955  <span style="text-decoration: underline;">1</span>209  <span style="text-decoration: underline;">4</span>725     5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Ind_1_2 Protocol 1  <span style="text-decoration: underline;">4</span>248  <span style="text-decoration: underline;">4</span>206   760  <span style="text-decoration: underline;">2</span>382     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Ind_3_1 Protocol 1  <span style="text-decoration: underline;">9</span>839  <span style="text-decoration: underline;">9</span>935  <span style="text-decoration: underline;">1</span>779  <span style="text-decoration: underline;">2</span>968   235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Ind_4_1 Protocol 1 <span style="text-decoration: underline;">34</span>248 <span style="text-decoration: underline;">35</span>719  <span style="text-decoration: underline;">5</span>707 <span style="text-decoration: underline;">21</span>254    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Ind_5_1 Protocol 1  <span style="text-decoration: underline;">2</span>306  <span style="text-decoration: underline;">2</span>357   397  <span style="text-decoration: underline;">1</span>484     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Ind_6_1 Protocol 1 <span style="text-decoration: underline;">58</span>317 <span style="text-decoration: underline;">59</span>471 <span style="text-decoration: underline;">10</span>206 <span style="text-decoration: underline;">17</span>742  <span style="text-decoration: underline;">1</span>576</span></span></code></pre></div>
+<p>processReadCounts() takes the per chromosome read counts, and
+produces a type-specific (autosomal/sex chromosomal) data for the
+downstream analyses. Two types of chromosomal aneuploidies can be
+explored here: autosomal or sex chromosomal. We begin with autosomal
+aneuploidies (sex chromosomal aneuploidies follow in the next code
+section) by setting refType=“auto”.</p>
+<p>To filter data to exclude very low-coverage data (at least 1,000
+reads), we set “minTotal=1e3”. Note that these samples will not
+necessarily be included in training the model, and can be just kept for
+calling karyotypes (although caution must be used interpreting
+low-coverage samples).</p>
+<p>We encourage a minimum of at least 30 samples (per protocol), and a
+functional minimum of 23 exists for estimating the parameters of the
+Dirichlet prior distribution.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Makes the read count input tibble for autosomal aneuploidies</span></span>
 <span><span class="va">indat.auto.example</span> <span class="op">&lt;-</span> <span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'auto'</span>, minProtocol <span class="op">=</span> <span class="fl">30</span>, minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'auto'</span>, </span>
+<span>                    minProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>                    minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
+<p>We now have the data required to search for autosomal aneuploidies,
+and run the same function to produce data for searching for sex
+chromosomal aneuploidies. This process requires that, for sex
+chromosomal aneuploidies, all autosomal reads are merged into one
+“category”, leaving us with just the number of reads mapping to the X
+and Y chromosomes, and then the number mapping to the autosomes.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Makes the read count input tibble for sex chromosomal aneuploidies</span></span>
 <span><span class="va">indat.sca.example</span> <span class="op">&lt;-</span> <span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'sca'</span>, minProtocol <span class="op">=</span> <span class="fl">30</span>, minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'sca'</span>, </span>
+<span>                    minProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>                    minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
+<p>Now that we have the required read counts, we estimate the parameters
+of the underlying Dirichlet prior distributions using the function
+makeDirichlet(). These parameter values address the fact that expected
+proportion of reads mapping to each chromosome is not so constant, due
+to subtle differences in sample quality, or sequencing runs (say) While
+these values are required for the method to work, the user never uses
+them directly.</p>
+<p>This function takes as input the cleaned read count data, the refType
+(again) and then minimum and maximum numbers of reads to be used in
+parameter estimation. A minimum is used to ensure the sample is high
+quality, but in many cases very, very high quality data with billions of
+reads can perform abnormally compared to more “average” sequence data
+(especially in capture data where stacking can occur). We encourage
+users to think about what is an “average” sequence, and set these values
+accordingly. We have found that these values seem to perform well for
+our simulated and empirical data so far.</p>
+<p>Note that parameters must be estimated for both autosomal
+aneuploidies, and….</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate parameters for the Dirichlet prior for autosomal aneuploidies</span></span>
 <span><span class="va">inDirichlet.auto.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/makeDirichlet.html">makeDirichlet</a></span><span class="op">(</span></span>
 <span>  <span class="va">indat.auto.example</span>,</span>
@@ -87,7 +153,8 @@
 <span>  min_reads <span class="op">=</span> <span class="fl">1e5</span>,</span>
 <span>  max_reads <span class="op">=</span> <span class="fl">1e9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>the sex chromosomal aneuploidies.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate parameters for the Dirichlet prior for sex chromosomal aneuploidies</span></span>
 <span><span class="co"># (Warning: this one produces a plot for making sure the clustering makes sense!)</span></span>
 <span><span class="va">inDirichlet.sca.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/makeDirichlet.html">makeDirichlet</a></span><span class="op">(</span></span>
@@ -96,32 +163,105 @@
 <span>  min_reads <span class="op">=</span> <span class="fl">1e5</span>,</span>
 <span>  max_reads <span class="op">=</span> <span class="fl">1e9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_analysis_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p><img src="example_analysis_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="672"></p>
+<p>Importantly, when estimating the parameters for the sex chromosomes,
+we generate a plot of the “training clusters”. Internally, the function
+filters outliers, and clusters the data into XX and XY clusters. Make
+sure that this plot looks reasonable, otherwise your model will be
+poorly trained and the resulting calls will be meaningless.</p>
+<p>We now call the karyotypes using the callKaryotypes() function.
+Again, we do this for autosomal and sex chromosomal aneuploidies
+separately, but the function will detect which reference type we are
+using. This function requires the read count data, and the Dirichlet
+parameters. Note that you must still supply match read count and
+Dirichlet inputs for either autosomal or sex chromosomal references as,
+(for example) if you supply read counts for the autosomes but the
+Dirichlet parameters for the sex chromosomal aneuploidies, the method
+will fail and throw an error (complaining about missing column
+names!).</p>
+<p>The only additional input is the (prior) estimated proportion of
+“contaminated” samples (here 0.01 or 1%). This value must be considered
+using either experience, or using other methods to estimate
+contamination.</p>
+<p>Here we perform calling for autosomal aneuploidies….</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Makes karyotype calls for autosomal aneuploidies</span></span>
 <span><span class="va">calls.auto.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/callKaryotypes.html">callKaryotypes</a></span><span class="op">(</span></span>
 <span>  <span class="va">indat.auto.example</span>,</span>
 <span>  <span class="va">inDirichlet.auto.example</span>,</span>
 <span>  p_contamination <span class="op">=</span> <span class="fl">0.01</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>and then sex chromosomal aneuploidies.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Makes karyotype calls for sex chromosomal aneuploidies</span></span>
 <span><span class="va">calls.sca.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/callKaryotypes.html">callKaryotypes</a></span><span class="op">(</span></span>
 <span>  <span class="va">indat.sca.example</span>,</span>
 <span>  <span class="va">inDirichlet.sca.example</span>,</span>
 <span>  p_contamination <span class="op">=</span> <span class="fl">0.01</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>Next, we calculate Z-scores for how different the observed proportion
+of reads mapping to each autosomal chromosome is compared to what was
+expected (given the posterior Dirichlet-multinomial distribution). These
+values have two uses.</p>
+<p>First, we can use them to show that significantly more/less reads
+than expected mapped to chromosomes of interest (13, 18 or 21),
+strengthening the evidence for the associated autosomal
+aneuploidies.</p>
+<p>Second, we might like to look at whether karyotype calls might be due
+to the true presence of the karyotype, or simply because of abnormal
+sequencing. For example, failed sequencing runs may cause reads to map
+almost randomly to chromosomes. To address this, we calculate a
+chi-squared statistic based on these Z-scores (but ignoring chromosomes
+13, 18 or 21). Here we also calculate the number of significant
+Z-scores, and call this total “flag”.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate Z-scores</span></span>
 <span><span class="va">z.scores.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/makeZscores.html">makeZscores</a></span><span class="op">(</span></span>
 <span>  <span class="va">indat.auto.example</span>,</span>
+<span>  refType <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  min_reads <span class="op">=</span> <span class="fl">1e3</span>,</span>
+<span>  max_reads <span class="op">=</span> <span class="fl">1e9</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">z.scores_diagnostic.example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/makeZscores.html">makeZscores</a></span><span class="op">(</span></span>
+<span>  <span class="va">indat.auto.example</span>,</span>
+<span>  refType <span class="op">=</span> <span class="st">'diagnostic'</span>,</span>
 <span>  min_reads <span class="op">=</span> <span class="fl">1e3</span>,</span>
 <span>  max_reads <span class="op">=</span> <span class="fl">1e9</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Test diagnostic plot is working!</span></span>
+<p>Inspecting the calls for the autosomal aneuploidies, we find that we
+have one individual of interest. We encourage users to restrict
+confident calls to where: (a) there are at least 60,000 reads, (b) the
+maxP (the posterior probability of the karyotype) is greater than 0.95,
+(c) that the sample is not unusual and (d) the number of flags is less
+than three.</p>
+<p>Note that we use the diagnostic z-scores here, and <em>not</em> the
+autosomal z-scores, because if the individual carries trisomy 21, then
+of course the read counts for chromosome 21 will be highly
+“unusual”!.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Do we have any suspected autosomal aneuploidy cases?</span></span>
+<span><span class="va">calls.auto.example</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">z.scores_diagnostic.example</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">sample</span>,<span class="va">p</span>,<span class="va">unusual</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>flag<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">flag</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                   by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sample'</span><span class="op">=</span><span class="st">'sample'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sample</span>,<span class="va">P_call</span>,<span class="va">total</span>,<span class="va">maxP</span>,<span class="va">p</span>,<span class="va">unusual</span>,<span class="va">flag</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">P_call</span><span class="op">!=</span><span class="st">'No Aneuploidy'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by 'sample', 'p'. You can override using the</span></span>
+<span><span class="co">#&gt; `.groups` argument.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
+<span><span class="co">#&gt;   sample    P_call      total  maxP     p unusual  flag</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Ind_255_1 Trisomy 21 <span style="text-decoration: underline;">254</span>544     1 1.000 FALSE       0</span></span></code></pre></div>
+<p>Here, we find that individual “Ind_255_1” might carry trisomy 21, and
+we can inspect this by generating a diagnostic plot. Note that multiple
+IDs can be given in the IDs input, but adding too many at once can make
+the plot look too busy.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Diagnostic plot for Trisomy 21</span></span>
 <span><span class="fu"><a href="../reference/plot_diagnostic.html">plot_diagnostic</a></span><span class="op">(</span></span>
-<span>  <span class="st">'Ind_1_'</span>,</span>
+<span>  IDs<span class="op">=</span><span class="st">'Ind_255_1'</span>,</span>
 <span>  calls.auto <span class="op">=</span> <span class="va">calls.auto.example</span>,</span>
 <span>  calls.sca <span class="op">=</span> <span class="va">calls.sca.example</span>,</span>
 <span>  inDirichlet.auto <span class="op">=</span> <span class="va">inDirichlet.auto.example</span>,</span>
@@ -133,7 +273,98 @@
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
-<p><img src="example_analysis_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="example_analysis_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="768"></p>
+<p>This plot can be interpreted in the following way:</p>
+<ol style="list-style-type: upper-alpha">
+<li><p>This plot is the x-rate (the proportion of reads mapping to the X
+chromosome) vs the y-rate (the proportion of reads mapping to the y
+chromosome). We colour a random sample of samples blue (XY) and red (XX)
+for reference, and denote the position of the individuals of interest
+using a repelled label. In this example, we can see that Ind_255_1 falls
+within the variation of other XX individuals (and the sex chromosomal
+karyotype was indeed XX in this case). This plot can be used for
+assessing/confirming sex chromosomal aneuploidies.</p></li>
+<li><p>This plot shows the Z-score per chromosome for the individuals of
+interest, compared to five randomly selected individuals. here we can
+see that, except for chromosome 21, all read counts are within
+reasonable variability (±2 standard deviations), confirming that the
+call of trisomy 21 is not due to strange sequencing.</p></li>
+<li><p>This plot shows the increase/decrease in the proportion of reads
+mapping to each chromosome, compared to the “average” XY individual.
+Here we see that there is approximately 48% more reads mapping to
+chromosome 21 than expect, consistent with an extra copy of chromosome
+21 being present (trisomy 21). We also see that we have twice as many
+copies of the X chromosome and basically no copies of the Y chromosome
+(compared to XY), consistent with XX. We also see that Ind_255_1 was
+produced using “protocol 1” and had 268,132 mapped reads.</p></li>
+</ol>
+<p>We now generate a diagnostic plot for an individual who carries the
+sex chromosomal aneuploidy XXX. We see three possible cases, although
+with only 1,579 reads, Ind_75_1 should be considered with caution, or
+even ignored. We investigate Ind_71_1.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Do we have any suspected sex chromosomal aneuploidy cases?</span></span>
+<span><span class="va">calls.sca.example</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">z.scores_diagnostic.example</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">sample</span>,<span class="va">p</span>,<span class="va">unusual</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>flag<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">flag</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                   by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sample'</span><span class="op">=</span><span class="st">'sample'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sample</span>,<span class="va">P_call</span>,<span class="va">total</span>,<span class="va">maxP</span>,<span class="va">p</span>,<span class="va">unusual</span>,<span class="va">flag</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">P_call</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'XX'</span>,<span class="st">'XY'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by 'sample', 'p'. You can override using the</span></span>
+<span><span class="co">#&gt; `.groups` argument.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
+<span><span class="co">#&gt;   sample    P_call  total  maxP     p unusual  flag</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Ind_71_1  XXX     <span style="text-decoration: underline;">76</span>444 1     0.368 FALSE       0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Ind_75_1  XXY      <span style="text-decoration: underline;">1</span>579 0.992 0.311 FALSE       0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Ind_185_1 XXX    <span style="text-decoration: underline;">225</span>713 1     0.885 FALSE       1</span></span></code></pre></div>
+<p>Note here that:</p>
+<ol style="list-style-type: upper-alpha">
+<li>The individual sits to the right of the XX cluster, consistent with
+XXX.</li>
+<li>Has no flags and is not “unusual”.</li>
+<li>Appears to carry three times as much of chromosome X (296%), and
+virtually nothing from chromosome Y (compared to XY), consistent with
+XXX.</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Test diagnostic plot is working!</span></span>
+<span><span class="fu"><a href="../reference/plot_diagnostic.html">plot_diagnostic</a></span><span class="op">(</span></span>
+<span>  IDs<span class="op">=</span><span class="st">'Ind_71_1'</span>,</span>
+<span>  calls.auto <span class="op">=</span> <span class="va">calls.auto.example</span>,</span>
+<span>  calls.sca <span class="op">=</span> <span class="va">calls.sca.example</span>,</span>
+<span>  inDirichlet.auto <span class="op">=</span> <span class="va">inDirichlet.auto.example</span>,</span>
+<span>  inDirichlet.sca <span class="op">=</span> <span class="va">inDirichlet.sca.example</span>,</span>
+<span>  z.scores <span class="op">=</span> <span class="va">z.scores.example</span>,</span>
+<span>  min_reads <span class="op">=</span> <span class="fl">6e4</span>,</span>
+<span>  max_reads <span class="op">=</span> <span class="fl">1e9</span>,</span>
+<span>  addLabels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
+<p><img src="example_analysis_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="768"></p>
+<p>Finally, we show a diagnostic for two individuals. An individual with
+read counts that behave well (Ind_22_1), and an individual where the
+read counts are behaving poorly (Ind_66_1).</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Test diagnostic plot is working!</span></span>
+<span><span class="fu"><a href="../reference/plot_diagnostic.html">plot_diagnostic</a></span><span class="op">(</span></span>
+<span>  IDs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Ind_22_1'</span>,<span class="st">'Ind_66_1'</span><span class="op">)</span>,</span>
+<span>  calls.auto <span class="op">=</span> <span class="va">calls.auto.example</span>,</span>
+<span>  calls.sca <span class="op">=</span> <span class="va">calls.sca.example</span>,</span>
+<span>  inDirichlet.auto <span class="op">=</span> <span class="va">inDirichlet.auto.example</span>,</span>
+<span>  inDirichlet.sca <span class="op">=</span> <span class="va">inDirichlet.sca.example</span>,</span>
+<span>  z.scores <span class="op">=</span> <span class="va">z.scores.example</span>,</span>
+<span>  min_reads <span class="op">=</span> <span class="fl">6e4</span>,</span>
+<span>  max_reads <span class="op">=</span> <span class="fl">1e9</span>,</span>
+<span>  addLabels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
+<p><img src="example_analysis_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="768"></p>
   </main>
 </div>
 
