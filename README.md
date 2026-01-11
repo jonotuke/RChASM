@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jonotuke/RChASM/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 RChASM: A Statistically Rigorous Method for the Detection of Chromosomal
