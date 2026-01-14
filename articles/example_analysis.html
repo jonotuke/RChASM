@@ -113,7 +113,7 @@ Dirichlet prior distribution.</p>
 <code class="sourceCode R"><span><span class="co"># Makes the read count input tibble for autosomal aneuploidies</span></span>
 <span><span class="va">indat.auto.example</span> <span class="op">&lt;-</span> <span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'auto'</span>, </span>
-<span>                    minProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>                    minSamplesPerProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
 <span>                    minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
 <p>We now have the data required to search for autosomal aneuploidies,
 and run the same function to produce data for searching for sex
@@ -125,7 +125,7 @@ and Y chromosomes, and then the number mapping to the autosomes.</p>
 <code class="sourceCode R"><span><span class="co"># Makes the read count input tibble for sex chromosomal aneuploidies</span></span>
 <span><span class="va">indat.sca.example</span> <span class="op">&lt;-</span> <span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/processReadCounts.html">processReadCounts</a></span><span class="op">(</span>refType <span class="op">=</span> <span class="st">'sca'</span>, </span>
-<span>                    minProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>                    minSamplesPerProtocol <span class="op">=</span> <span class="fl">30</span>, </span>
 <span>                    minTotal <span class="op">=</span> <span class="fl">1e3</span><span class="op">)</span></span></code></pre></div>
 <p>Now that we have the required read counts, we estimate the parameters
 of the underlying Dirichlet prior distributions using the function

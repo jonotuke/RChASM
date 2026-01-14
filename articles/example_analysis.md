@@ -61,7 +61,7 @@ Dirichlet prior distribution.
 # Makes the read count input tibble for autosomal aneuploidies
 indat.auto.example <- example_data %>%
   processReadCounts(refType = 'auto', 
-                    minProtocol = 30, 
+                    minSamplesPerProtocol = 30, 
                     minTotal = 1e3)
 ```
 
@@ -76,7 +76,7 @@ chromosomes, and then the number mapping to the autosomes.
 # Makes the read count input tibble for sex chromosomal aneuploidies
 indat.sca.example <- example_data %>%
   processReadCounts(refType = 'sca', 
-                    minProtocol = 30, 
+                    minSamplesPerProtocol = 30, 
                     minTotal = 1e3)
 ```
 

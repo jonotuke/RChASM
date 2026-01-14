@@ -5,7 +5,12 @@ Task: takes read counts and makes useful file
 ## Usage
 
 ``` r
-processReadCounts(rawReadCountsIn, refType, minTotal = 1000, minProtocol = 30)
+processReadCounts(
+  rawReadCountsIn,
+  refType,
+  minTotal = 1000,
+  minSamplesPerProtocol = 30
+)
 ```
 
 ## Arguments
@@ -22,7 +27,7 @@ processReadCounts(rawReadCountsIn, refType, minTotal = 1000, minProtocol = 30)
 
   minimum number of protocol counts to be included
 
-- minProtocol:
+- minSamplesPerProtocol:
 
   "auto"="autosomal"; "sca"="sex chromosomal"
 
