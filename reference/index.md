@@ -8,6 +8,8 @@
   bounds number to be in \[0,1\] (contamination estimation)
 - [`callKaryotypes()`](https://jonotuke.github.io/RChASM/reference/callKaryotypes.md)
   : Take prior and observed counts and calls karyotypes and Z-scores
+- [`combineData()`](https://jonotuke.github.io/RChASM/reference/combineData.md)
+  : combine data
 - [`ddirichletultinomial()`](https://jonotuke.github.io/RChASM/reference/ddirichletultinomial.md)
   : calculate Dirichlet probabilities with filtering
 - [`dirichlet.mle_filter()`](https://jonotuke.github.io/RChASM/reference/dirichlet.mle_filter.md)
@@ -28,3 +30,5 @@
   : Plots diagnostic plots
 - [`processReadCounts()`](https://jonotuke.github.io/RChASM/reference/processReadCounts.md)
   : processReadCounts
+- [`summary_calls()`](https://jonotuke.github.io/RChASM/reference/summary_calls.md)
+  : summary_calls

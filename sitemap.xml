@@ -9,6 +9,7 @@
 <url><loc>https://jonotuke.github.io/RChASM/reference/adjustA.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/bound.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/callKaryotypes.html</loc></url>
+<url><loc>https://jonotuke.github.io/RChASM/reference/combineData.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/ddirichletultinomial.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/dirichlet.mle_filter.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/estimateGamma.html</loc></url>
@@ -21,5 +22,6 @@
 <url><loc>https://jonotuke.github.io/RChASM/reference/pipe.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/plot_diagnostic.html</loc></url>
 <url><loc>https://jonotuke.github.io/RChASM/reference/processReadCounts.html</loc></url>
+<url><loc>https://jonotuke.github.io/RChASM/reference/summary_calls.html</loc></url>
 </urlset>
 
