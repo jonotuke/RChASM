@@ -46,7 +46,7 @@ We encourage a minimum of at least 30 samples (per protocol), and a functional m
 # Makes the read count input tibble for autosomal aneuploidies
 indat.auto.example <- example_data %>%
   processReadCounts(refType = 'auto', 
-                    minProtocol = 30, 
+                    minSamplesPerProtocol = 30, 
                     minTotal = 1e3)
 ```
 
@@ -56,7 +56,7 @@ We now have the data required to search for autosomal aneuploidies, and run the 
 # Makes the read count input tibble for sex chromosomal aneuploidies
 indat.sca.example <- example_data %>%
   processReadCounts(refType = 'sca', 
-                    minProtocol = 30, 
+                    minSamplesPerProtocol = 30, 
                     minTotal = 1e3)
 ```
 

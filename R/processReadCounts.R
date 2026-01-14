@@ -40,7 +40,7 @@ utils::globalVariables(
 #' @param rawReadCountsIn the reads counts via KP
 #' @param refType for capture, use only on-target (F)?
 #' @param minTotal minimum number of protocol counts to be included
-#' @param minProtocol "auto"="autosomal"; "sca"="sex chromosomal"
+#' @param minSamplesPerProtocol "auto"="autosomal"; "sca"="sex chromosomal"
 #'
 #' @returns outreadcounts
 #'
@@ -49,7 +49,7 @@ processReadCounts <- function(
   rawReadCountsIn,
   refType,
   minTotal = 1e3,
-  minProtocol = 30
+  minSamplesPerProtocol = 30
 ) {
   # Need to check inputs
   # Check rawReadCountsIn is a dataframe or tibble
@@ -121,16 +121,16 @@ processReadCounts <- function(
     base::stop("minTotal must be a positive integer.")
   }
 
-  # check that minProtocol is a positive integer
-  if (!checkmate::checkInt(minProtocol, lower = 1)) {
-    base::stop("minProtocol must be a positive integer.")
+  # check that minSamplesPerProtocol is a positive integer
+  if (!checkmate::checkInt(minSamplesPerProtocol, lower = 1)) {
+    base::stop("minSamplesPerProtocol must be a positive integer.")
   }
 
   # Filter data for minimum values
   rawReadCounts <- rawReadCountsIn %>%
     dplyr::mutate(protocol = tolower(protocol)) %>%
     dplyr::group_by(protocol) %>%
-    dplyr::filter(dplyr::n() >= minProtocol) %>%
+    dplyr::filter(dplyr::n() >= minSamplesPerProtocol) %>%
     dplyr::ungroup()
 
   # If refType is SCA then fold into X, Y and Automsomal

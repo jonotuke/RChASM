@@ -4,7 +4,12 @@
 \alias{processReadCounts}
 \title{processReadCounts}
 \usage{
-processReadCounts(rawReadCountsIn, refType, minTotal = 1000, minProtocol = 30)
+processReadCounts(
+  rawReadCountsIn,
+  refType,
+  minTotal = 1000,
+  minSamplesPerProtocol = 30
+)
 }
 \arguments{
 \item{rawReadCountsIn}{the reads counts via KP}
@@ -13,7 +18,7 @@ processReadCounts(rawReadCountsIn, refType, minTotal = 1000, minProtocol = 30)
 
 \item{minTotal}{minimum number of protocol counts to be included}
 
-\item{minProtocol}{"auto"="autosomal"; "sca"="sex chromosomal"}
+\item{minSamplesPerProtocol}{"auto"="autosomal"; "sca"="sex chromosomal"}
 }
 \value{
 outreadcounts

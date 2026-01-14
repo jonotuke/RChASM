@@ -77,10 +77,10 @@ makeDirichlet <- function(indat, refType, min_reads = 3e4, max_reads = 1e9) {
     base::stop("min_reads must be a positive integer.")
   }
 
-  # check that minProtocol is a positive integer
+  # check that minSamplesPerProtocol is a positive integer
   if (!checkmate::checkInt(max_reads, lower = min_reads)) {
     base::stop(paste0(
-      "minProtocol must be a positive integer, greater than ",
+      "minSamplesPerProtocol must be a positive integer, greater than ",
       min_reads,
       "."
     ))

@@ -158,10 +158,10 @@ plot_diagnostic <- function(
     base::stop("min_reads must be a positive integer.")
   }
 
-  # check that minProtocol is a positive integer
+  # check that minSamplesPerProtocol is a positive integer
   if (!checkmate::checkInt(max_reads, lower = min_reads)) {
     base::stop(base::paste0(
-      "minProtocol must be a positive integer, greater than ",
+      "minSamplesPerProtocol must be a positive integer, greater than ",
       min_reads,
       "."
     ))
