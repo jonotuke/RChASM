@@ -2,8 +2,10 @@
 
 export("%>%")
 export(callKaryotypes)
+export(combineData)
 export(makeDirichlet)
 export(makeZscores)
 export(plot_diagnostic)
 export(processReadCounts)
+export(summary_calls)
 importFrom(magrittr,"%>%")
