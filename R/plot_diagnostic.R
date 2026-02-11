@@ -17,13 +17,7 @@ utils::globalVariables(
 #' Plots diagnostic plots
 #'
 #' @param IDs a list or predefined piped string of sample IDs to look for
-#' @param calls.auto the autosomal karyotype calls for the samples
-#' @param calls.sca the sex chromosomal karyotype calls for the samples
-#' @param z.scores the autosomal z-scores for the samples
-#' @param inDirichlet.auto the dirichlet parameters for the autosomes
-#' @param inDirichlet.sca the dirichlet parameters for the sex chromosomes
-#' @param min_reads min number of reads per sample
-#' @param max_reads max number of reads per sample
+#' @param inChASM parameter object
 #' @param addLabels add "A", "B" and "C" to the plot panels?
 #'
 #' @returns plots
@@ -31,15 +25,17 @@ utils::globalVariables(
 #' @export
 plot_diagnostic <- function(
   IDs,
-  calls.auto,
-  calls.sca,
-  z.scores,
-  inDirichlet.auto,
-  inDirichlet.sca,
-  min_reads = 3e4,
-  max_reads = 1e9,
+  inChASM,
   addLabels = FALSE
 ) {
+  calls.auto <- inChASM$karyotypes.auto
+  calls.sca <- inChASM$karyotypes.sca
+  z.scores <- inChASM$z.scores
+  inDirichlet.auto <- inChASM$dirichlet.auto
+  inDirichlet.sca <- inChASM$dirichlet.sca
+  min_reads = inChASM$min_reads
+  max_reads = inChASM$max_reads
+
   # Define required column names
   calls.auto.reqNames <- base::c(
     'total',
@@ -161,7 +157,7 @@ plot_diagnostic <- function(
   # check that minSamplesPerProtocol is a positive integer
   if (!checkmate::checkInt(max_reads, lower = min_reads)) {
     base::stop(base::paste0(
-      "minSamplesPerProtocol must be a positive integer, greater than ",
+      "max_reads must be a positive integer, greater than min_reads",
       min_reads,
       "."
     ))
@@ -199,13 +195,7 @@ plot_diagnostic <- function(
     ) +
     ggsci::scale_colour_startrek(drop = FALSE, guide = 'none') +
     ggplot2::xlab('X-Rate') +
-    ggplot2::ylab('Y-Rate') +
-    ggplot2::theme(
-      axis.ticks.x = ggplot2::element_blank(),
-      axis.ticks.y = ggplot2::element_blank(),
-      axis.text.x.bottom = ggplot2::element_blank(),
-      axis.text.y.left = ggplot2::element_blank()
-    )
+    ggplot2::ylab('Y-Rate')
 
   ## Second ggplot panel
   protocols <- z.scores %>%
@@ -233,7 +223,7 @@ plot_diagnostic <- function(
     base::c('Reference')
   gg2 <- z.scores %>%
     dplyr::filter(
-      (Nj >= min_reads & Nj <= max_reads) |
+      (Nj >= min_reads & Nj <= max_reads & flags <= 2) |
         stringr::str_detect(sample, base::paste0(IDs, collapse = '|'))
     ) %>%
     dplyr::filter(protocol %in% protocols) %>%
@@ -330,7 +320,7 @@ plot_diagnostic <- function(
     dplyr::filter(protocol %in% protocols) %>%
     dplyr::rename(sca_total = total) %>%
     dplyr::select(sample, protocol, P_call, sca_total, X, Y)
-  gg3 <- dplyr::left_join(
+  gg3.data <- dplyr::left_join(
     a2,
     a1,
     by = base::c('sample' = 'sample', 'protocol' = 'protocol')
@@ -393,6 +383,27 @@ plot_diagnostic <- function(
     dplyr::mutate(
       x_label = base::paste0(sample, '\n', protocol, '\nn=', sca_total)
     ) %>%
+    dplyr::left_join(
+      z.scores %>%
+        dplyr::select(sample, protocol, chr, Zij),
+      by = c('sample' = 'sample', 'protocol' = 'protocol', 'chr' = 'chr')
+    ) %>%
+    dplyr::mutate(
+      fill_colour = ifelse(
+        abs(Zij) < 2 | base::is.na(Zij),
+        'black',
+        'lightgrey'
+      ),
+      text_colour = ifelse(abs(Zij) < 2 | base::is.na(Zij), 'white', 'black')
+    ) %>%
+    dplyr::mutate(
+      chr = chr %>%
+        base::factor(
+          levels = base::c(base::paste0('chr', base::c(1:22, 'X', 'Y')))
+        )
+    )
+
+  gg3 <- gg3.data %>%
     ggplot2::ggplot(ggplot2::aes(
       x = chr,
       y = fold_label,
@@ -402,8 +413,8 @@ plot_diagnostic <- function(
     )) +
     ggplot2::theme_bw() +
     ggplot2::geom_hline(yintercept = 100, linetype = 'dashed') +
-    ggplot2::geom_point(pch = 21, fill = 'black', size = 8) +
-    ggplot2::geom_text(col = 'white', size = 3) +
+    ggplot2::geom_point(fill = gg3.data$fill_colour, pch = 21, size = 8) +
+    ggplot2::geom_text(col = gg3.data$text_colour, size = 3) +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1)
     ) +
@@ -416,7 +427,12 @@ plot_diagnostic <- function(
     ggplot2::scale_colour_discrete(name = NULL) +
     ggplot2::xlab(NULL) +
     ggplot2::ylab('Fold-increase\n(Compared to XY)') +
-    ggplot2::theme(legend.position = 'bottom')
+    ggplot2::theme(legend.position = 'bottom') +
+    ggplot2::guides(
+      color = ggplot2::guide_legend(
+        override.aes = list(fill = 'darkgrey', stroke = 1)
+      )
+    )
 
   if (addLabels) {
     gg.final <- cowplot::plot_grid(

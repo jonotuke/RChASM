@@ -13,7 +13,7 @@ utils::globalVariables(
 #' Combine both autosomal and sex chromosomal analyses into one output
 #'
 #'
-#' @param calls.combined the result of combining both autosomal and sca analyses
+#' @param inChASM the result of combining both autosomal and sca analyses
 #' @param minTotal minimum total for autosomal or sca analyses
 #' @param minPosterior minimum value maxP can take (i.e. minimum posterior probability accepted)
 #' @param ignoreUnusual filter our unusual observations?
@@ -23,7 +23,7 @@ utils::globalVariables(
 #'
 #' @export
 summary_calls <- function(
-  calls.combined,
+  inChASM,
   minTotal = 6e4,
   minPosterior = 0.95,
   ignoreUnusual = FALSE,
@@ -44,6 +44,8 @@ summary_calls <- function(
     'automsomal_maxP',
     'sca_maxP'
   )
+
+  calls.combined <- inChASM$karyotypes
 
   # calls.combined must be a data frame or a tibble
   if (

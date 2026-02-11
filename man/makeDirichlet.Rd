@@ -4,7 +4,13 @@
 \alias{makeDirichlet}
 \title{function to make a Dirichlet prior}
 \usage{
-makeDirichlet(indat, refType, min_reads = 30000, max_reads = 1e+09)
+makeDirichlet(
+  indat,
+  refType,
+  min_reads = 30000,
+  max_reads = 1e+09,
+  show_plot = TRUE
+)
 }
 \arguments{
 \item{indat}{full input tibble}
@@ -14,6 +20,8 @@ makeDirichlet(indat, refType, min_reads = 30000, max_reads = 1e+09)
 \item{min_reads}{min number of reads per sample}
 
 \item{max_reads}{max number of reads per sample}
+
+\item{show_plot}{boolean to show plot}
 }
 \value{
 Dirichlet prior

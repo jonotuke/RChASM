@@ -4,34 +4,12 @@
 \alias{plot_diagnostic}
 \title{Plots diagnostic plots}
 \usage{
-plot_diagnostic(
-  IDs,
-  calls.auto,
-  calls.sca,
-  z.scores,
-  inDirichlet.auto,
-  inDirichlet.sca,
-  min_reads = 30000,
-  max_reads = 1e+09,
-  addLabels = FALSE
-)
+plot_diagnostic(IDs, inChASM, addLabels = FALSE)
 }
 \arguments{
 \item{IDs}{a list or predefined piped string of sample IDs to look for}
 
-\item{calls.auto}{the autosomal karyotype calls for the samples}
-
-\item{calls.sca}{the sex chromosomal karyotype calls for the samples}
-
-\item{z.scores}{the autosomal z-scores for the samples}
-
-\item{inDirichlet.auto}{the dirichlet parameters for the autosomes}
-
-\item{inDirichlet.sca}{the dirichlet parameters for the sex chromosomes}
-
-\item{min_reads}{min number of reads per sample}
-
-\item{max_reads}{max number of reads per sample}
+\item{inChASM}{parameter object}
 
 \item{addLabels}{add "A", "B" and "C" to the plot panels?}
 }

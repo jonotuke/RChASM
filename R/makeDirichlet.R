@@ -19,11 +19,18 @@ utils::globalVariables(
 #' @param refType "auto"="autosomal"; "sca"="sex chromosomal"; "diagnostic"
 #' @param min_reads min number of reads per sample
 #' @param max_reads max number of reads per sample
+#' @param show_plot boolean to show plot
 #'
 #' @returns Dirichlet prior
 #'
 #' @export
-makeDirichlet <- function(indat, refType, min_reads = 3e4, max_reads = 1e9) {
+makeDirichlet <- function(
+  indat,
+  refType,
+  min_reads = 3e4,
+  max_reads = 1e9,
+  show_plot = TRUE
+) {
   # refType must be auto, sca or diagnostic
   # Check that refType is one of the two possible inputs
   if (!(refType %in% base::c('auto', 'sca', 'diagnostic'))) {
@@ -84,6 +91,11 @@ makeDirichlet <- function(indat, refType, min_reads = 3e4, max_reads = 1e9) {
       min_reads,
       "."
     ))
+  }
+
+  # check that show_plots is boolean
+  if (!checkmate::checkLogical(show_plot)) {
+    base::stop("show_plot must be TRUE or FALSE")
   }
 
   # Extract protocols
@@ -249,13 +261,27 @@ makeDirichlet <- function(indat, refType, min_reads = 3e4, max_reads = 1e9) {
       )
 
     a.ggplot <- dat.clustered %>%
-      ggplot2::ggplot(ggplot2::aes(x = px, y = py, col = cluster)) +
+      ggplot2::ggplot(ggplot2::aes(
+        x = px,
+        y = py,
+        shape = base::interaction(cluster, protocol, sep = '/'),
+        fill = base::interaction(cluster, protocol, sep = '/')
+      )) +
       ggplot2::theme_bw() +
-      ggplot2::geom_point() +
+      ggplot2::geom_point(col = 'black') +
       ggplot2::xlab('x-rate') +
       ggplot2::ylab('y-rate') +
-      ggplot2::scale_colour_discrete(name = 'Clustered\nGenetic\nSex')
-    base::plot(a.ggplot)
+      ggplot2::scale_fill_discrete(
+        name = 'Clustered\nGenetic\nSex\nby Protocol'
+      ) +
+      ggplot2::scale_shape_manual(
+        name = 'Clustered\nGenetic\nSex\nby Protocol',
+        values = rep(21:25, 1e3)
+      )
+
+    if (show_plot) {
+      base::plot(a.ggplot)
+    }
 
     outMat <- base::matrix(
       0,

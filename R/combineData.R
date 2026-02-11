@@ -1,5 +1,5 @@
 utils::globalVariables(
-  c("flags")
+  c("flags", "P_C")
 )
 #' combine data
 #'
@@ -172,7 +172,7 @@ combineData <- function(
     dplyr::summarise(
       .groups = 'keep',
       Xj = base::sum(Zij^2),
-      flags = base::sum(abs(Zij) > 3)
+      flags = base::sum(abs(Zij) > 2)
     ) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(p = 1 - stats::pchisq(Xj, df = 19), unusual = p < 0.05)
@@ -186,8 +186,13 @@ combineData <- function(
     ) %>%
     dplyr::left_join(
       calls.sca %>%
-        dplyr::select(sample, total, P_call, maxP) %>%
-        dplyr::rename(sca_total = total, sca_call = P_call, sca_maxP = maxP),
+        dplyr::select(sample, total, P_call, maxP, P_C) %>%
+        dplyr::rename(
+          sca_total = total,
+          sca_call = P_call,
+          sca_maxP = maxP,
+          C_call = P_C
+        ),
       by = c('sample' = 'sample')
     ) %>%
     dplyr::left_join(z.scores.fold, by = c('sample' = 'sample')) %>%

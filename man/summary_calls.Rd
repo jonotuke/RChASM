@@ -5,7 +5,7 @@
 \title{summary_calls}
 \usage{
 summary_calls(
-  calls.combined,
+  inChASM,
   minTotal = 60000,
   minPosterior = 0.95,
   ignoreUnusual = FALSE,
@@ -13,7 +13,7 @@ summary_calls(
 )
 }
 \arguments{
-\item{calls.combined}{the result of combining both autosomal and sca analyses}
+\item{inChASM}{the result of combining both autosomal and sca analyses}
 
 \item{minTotal}{minimum total for autosomal or sca analyses}
 
