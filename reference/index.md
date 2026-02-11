@@ -28,7 +28,11 @@
   : Calculates Z-scores per chromosome
 - [`plot_diagnostic()`](https://jonotuke.github.io/RChASM/reference/plot_diagnostic.md)
   : Plots diagnostic plots
+- [`printChASM()`](https://jonotuke.github.io/RChASM/reference/printChASM.md)
+  : A function to print the result of the combined analysis to screen
 - [`processReadCounts()`](https://jonotuke.github.io/RChASM/reference/processReadCounts.md)
   : processReadCounts
+- [`runChASM()`](https://jonotuke.github.io/RChASM/reference/runChASM.md)
+  : Title
 - [`summary_calls()`](https://jonotuke.github.io/RChASM/reference/summary_calls.md)
   : summary_calls

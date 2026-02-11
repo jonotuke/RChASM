@@ -6,7 +6,7 @@ Combine both autosomal and sex chromosomal analyses into one output
 
 ``` r
 summary_calls(
-  calls.combined,
+  inChASM,
   minTotal = 60000,
   minPosterior = 0.95,
   ignoreUnusual = FALSE,
@@ -16,7 +16,7 @@ summary_calls(
 
 ## Arguments
 
-- calls.combined:
+- inChASM:
 
   the result of combining both autosomal and sca analyses
 
