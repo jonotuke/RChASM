@@ -11,3 +11,4 @@ RChASM.code-workspace
 ^pkgdown$
 ^doc$
 ^Meta$
+^submission/

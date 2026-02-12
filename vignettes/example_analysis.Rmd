@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 library(RChASM)
 library(magrittr)
 library(mclust)
-library(tidyverse)
 ```
 
 ## Introduction
