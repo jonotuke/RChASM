@@ -30,4 +30,6 @@ pak::pak("jonotuke/RChASM")
 
 ## Example
 
-Please see `vignette("example_analysis")` for a tutorial
+Please see
+[`vignette("example_analysis")`](https://jonotuke.github.io/RChASM/articles/example_analysis.md)
+for a tutorial

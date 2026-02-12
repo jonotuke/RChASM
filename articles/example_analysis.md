@@ -8,252 +8,218 @@ library(mclust)
 #> Type 'citation("mclust")' for citing this R package in publications.
 ```
 
+## Introduction
+
+RChASM is a method for identifying chromosomal aneuploidies in studies
+where coverage is very low (0.006X-0.0014X), such as for ancient DNA.
+RChASM does this by modeling the proportion of reads mapping to each
+chromosome, using a Dirichlet-multinomial distribution, estimated from a
+user-provided training data set. This means that RChASM is only
+applicable to studies with at least 23 samples.
+
+The Dirichlet-multinomial is a Bayesian combination of the Dirichlet
+distribution and the Multinomial distribution. The combination of these
+two distributions do the following things:
+
+1.  Multinomial distribution: allows us to account for variability in
+    the observed proportions due simply to sampling depth, measured here
+    by the total number of reads that mapped to the reference
+    distribution, for a given sample.
+2.  Dirichlet distribution: allows us to model the variability in the
+    observed proportions due to differences in sample degradation and
+    data generation protocols.
+
+We allow for different data-generation protocols (called simply
+“protocol” from here on), defined here as the combination of sequencing
+types (e.g. shotgun or 1240k capture) and library
+preparation/architecture (e.g. single or double strand). However this
+can be ignored if all data comes from the same overall protocol. The
+analysis starts with processing your bam files. It is important to
+remove duplicates, and to include all other sensible methods of data
+quality control, and that this is consistent across all data with the
+same protocol.
+
+We provide a bash script to easily process your bam files. Please note
+that the script works identically regardless of the choice of reference
+genome, but if you choose to process your bam files manually, note the
+required column names below. For steps on how to use the pre-processing
+script, please see the final section at the end of this vignette titled
+“Pre-processing your data using our script”. However, any data set can
+be used as long as: the first column gives the sample IDs, and there are
+read counts for each chromosome (excluding MT) with column headers
+“chr1”, “chr2”,..,“chr22” and “X” and “Y”.
+
+For this example analysis we are simply using the inbuilt example data
+set, which is loaded from the RChASM package using the *data()*
+function.
+
 ``` r
 data(example_data)
 ```
 
-We begin with the in-built example data. However, any data set can be
-used as long as: the first column gives the sample IDs, and there are
-read counts for each chromosome (excluding MT) with column headers
-“chr1”, “chr2”,..,“chr22” and “X” and “Y”.
+## Running the analysis using runChASM()
 
-At this stage, if you have mixed data that uses different sequencing
-protocols, you can include this in a column titled “protocol”. If this
-is not included, the function will assume each row represents data using
-the same sequencing protocol (and assigns a column with the entry
-“default”). Essentially, RChASM treats the different protocols as
-separate analyses anyway.
+At this stage, if you have “mixed data” that uses different data
+generation protocols (called protocol from here forward), you can
+include this in a column titled “protocol”. If this is not included, the
+function will assume each row represents data using the same sequencing
+protocol (and assigns a column with the entry “default”). Essentially,
+RChASM treats the different protocols as separate analyses anyway.
 
 ``` r
-# An example of data that RChASM analyses (omitting columns for chromosomes 3 to 21).
+# An example of data that RChASM analyses (omitting columns for chromosomes 3 to 20).
 example_data %>%
-  dplyr::select(sample,protocol,chr1,chr2,chr22,X,Y) %>%
+  dplyr::select(sample, protocol, chr1, chr2, chr21, chr22, X, Y) %>%
   head()
-#> # A tibble: 6 × 7
-#>   sample  protocol    chr1  chr2 chr22     X     Y
-#>   <chr>   <chr>      <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Ind_1_1 Protocol 1  7471  7955  1209  4725     5
-#> 2 Ind_1_2 Protocol 1  4248  4206   760  2382     2
-#> 3 Ind_3_1 Protocol 1  9839  9935  1779  2968   235
-#> 4 Ind_4_1 Protocol 1 34248 35719  5707 21254    12
-#> 5 Ind_5_1 Protocol 1  2306  2357   397  1484     1
-#> 6 Ind_6_1 Protocol 1 58317 59471 10206 17742  1576
+#> # A tibble: 6 × 8
+#>   sample  protocol    chr1  chr2 chr21 chr22     X     Y
+#>   <chr>   <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Ind_1_1 Protocol 1  7471  7955  1151  1209  4725     5
+#> 2 Ind_1_2 Protocol 1  4248  4206   631   760  2382     2
+#> 3 Ind_3_1 Protocol 1  9839  9935  1487  1779  2968   235
+#> 4 Ind_4_1 Protocol 1 34248 35719  5193  5707 21254    12
+#> 5 Ind_5_1 Protocol 1  2306  2357   356   397  1484     1
+#> 6 Ind_6_1 Protocol 1 58317 59471  8866 10206 17742  1576
 ```
 
-processReadCounts() takes the per chromosome read counts, and produces a
-type-specific (autosomal/sex chromosomal) data for the downstream
-analyses. Two types of chromosomal aneuploidies can be explored here:
-autosomal or sex chromosomal. We begin with autosomal aneuploidies (sex
-chromosomal aneuploidies follow in the next code section) by setting
-refType=“auto”.
+Once you have the input data read into R as a data frame/tibble, ChASM
+is run by one command: *runChASM()*. The user must decide on a few
+parameters, but all of these have default values that have been
+calculated using a large-scale simulation study which can be used.
+Nevertheless, here are the parameters that can be adjusted.
 
-To filter data to exclude very low-coverage data (at least 1,000 reads),
-we set “minTotal=1e3”. Note that these samples will not necessarily be
-included in training the model, and can be just kept for calling
-karyotypes (although caution must be used interpreting low-coverage
-samples).
+- **minSamplesPerProtocol:** this is the minimum number of samples
+  required to calculate the required Dirichlet distribution parameters.
+  We encourage a minimum of at least 30 samples (per protocol), although
+  a functional minimum of 23 exists for estimating the parameters of the
+  Dirichlet prior distribution.
+- **min_reads:** the minimum number of reads that a sample can have to
+  be used in estimating the Dirichlet parameters. We urge caution
+  calling karyotypes for samples with less than 60,000 reads, and so it
+  makes sense to use this as a lower threshold for estimating the prior
+  distribution for the read counts.
+- **max_reads:** the maximum number of reads that a sample can have to
+  be used in estimating the Dirichlet parameters. Sometimes the read
+  counts of very high-coverage samples behave strangely, likely due to
+  the sample reaching complexity, and it is made worse by high-coverage
+  samples with poor preservation.
+- **p_contamination:** the proportion of samples in your study that you
+  expect would return significant contamination estimates. This can be
+  found by simply running your favourite contamination estimator on your
+  data set, and seeing what this proportion is (although we consider
+  XX+XY contamination only here, a conservative estimate from all
+  contamination will perform well).
+- **show_plot:** a TRUE/FALSE setting that decides if you see the x-rate
+  vs y-rate clusters used to train the sex chromosomal aneuploidy prior
+  distribution. We encourage user to make sure that you see two
+  reasonable clusters, representing XX and XY. If not, you may need to
+  adjust min_reads and max_reads, or you may have too few samples for
+  variability in the samples (although this is unlikely as this
+  distribution is only three-dimensional).
+- **printMissingIDs:** a TRUE/FALSE setting that decides if you see
+  which samples are missing in the merge of the two aneuploidy types:
+  sex chromosomal and autosomal, or just how many.
 
-We encourage a minimum of at least 30 samples (per protocol), and a
-functional minimum of 23 exists for estimating the parameters of the
-Dirichlet prior distribution.
+RChASM is run on your data (example_data here) using one command,
+*runChASM()*, as follows. This function runs two separate analyses, one
+each for the sex chromosomal and the autosomal aneuploidies, that
+processes the data, fits the prior distribution, and then calls the
+karyotypes. It then merges these analyses into one result, and
+calculates the required Z-scores.
 
 ``` r
-# Makes the read count input tibble for autosomal aneuploidies
-indat.auto.example <- example_data %>%
-  processReadCounts(refType = 'auto', 
-                    minSamplesPerProtocol = 30, 
-                    minTotal = 1e3)
+example_calls <- runChASM(rawReadCountsIn = example_data)
 ```
 
-We now have the data required to search for autosomal aneuploidies, and
-run the same function to produce data for searching for sex chromosomal
-aneuploidies. This process requires that, for sex chromosomal
-aneuploidies, all autosomal reads are merged into one “category”,
-leaving us with just the number of reads mapping to the X and Y
-chromosomes, and then the number mapping to the autosomes.
+![](example_analysis_files/figure-html/unnamed-chunk-4-1.png)
+
+*runChASM()* return a list with the merged results (karyotypes), the two
+separate autosomal (karyotypes.auto) and sex chromosomal aneuploidies
+(karyotypes.sca), the per-protocol parameters of the Dirichlet
+distributions for the autosomes (dirichlet.auto) and the sex chromosomes
+(dirichlet.sca), the Z-scores (z.scores), as well as the settings used
+for the analysis (minSamplesPerProtocol, min_reads, max_reads and
+p_contamination). You need never look at this list of output as we have
+functions to explore your results!
+
+We can also see from the (above) diagnostic plot that there are two
+sensible clusters for XX and XY in our data!
+
+## Interpreting results and producing diagnostic plots
+
+### Uncommon aneuploidies - analysis overview
+
+Now that we have run RChASM, we can see if we have any samples with
+uncommon karyotypes. We do this by passing the RChASM results to the
+*summary_calls()* function. This function simply returns any individuals
+that do not have a karyotype of XX or XY, or has a karyotype of trisomy
+13, 18 or 21. You can choose to further for samples with a lower bound
+on the number of observed reads (again we suggest 60,000 reads), or the
+maximum posterior probability (we suggest 0.95 in general, and 0.99 for
+uncommon karyotypes). You can also omit samples that are “unusual”
+(*i.e.*, that have a significant chi-squared goodness-of-fit statistic).
+However, as this statistic can be quite sensitive, we encourage users to
+inspect this statistic in context with the z-score plot (see panel B in
+the diagnostic plots ahead).
 
 ``` r
-# Makes the read count input tibble for sex chromosomal aneuploidies
-indat.sca.example <- example_data %>%
-  processReadCounts(refType = 'sca', 
-                    minSamplesPerProtocol = 30, 
-                    minTotal = 1e3)
+summary_calls(inChASM = example_calls, minTotal = 6e4, minPosterior = 0.95)
+#> # A tibble: 3 × 10
+#>   sample  unusual flags autosomal_call sca_call C_call autosomal_total sca_total
+#>   <chr>   <lgl>   <int> <chr>          <chr>    <chr>            <dbl>     <dbl>
+#> 1 Ind_71… TRUE        4 No Aneuploidy  XXX      No Si…           70688     76444
+#> 2 Ind_18… FALSE       1 No Aneuploidy  XXX      No Si…          209933    225713
+#> 3 Ind_25… FALSE       0 Trisomy 21     XX       No Si…          254544    268132
+#> # ℹ 2 more variables: automsomal_maxP <dbl>, sca_maxP <dbl>
 ```
 
-Now that we have the required read counts, we estimate the parameters of
-the underlying Dirichlet prior distributions using the function
-makeDirichlet(). These parameter values address the fact that expected
-proportion of reads mapping to each chromosome is not so constant, due
-to subtle differences in sample quality, or sequencing runs (say) While
-these values are required for the method to work, the user never uses
-them directly.
-
-This function takes as input the cleaned read count data, the refType
-(again) and then minimum and maximum numbers of reads to be used in
-parameter estimation. A minimum is used to ensure the sample is high
-quality, but in many cases very, very high quality data with billions of
-reads can perform abnormally compared to more “average” sequence data
-(especially in capture data where stacking can occur). We encourage
-users to think about what is an “average” sequence, and set these values
-accordingly. We have found that these values seem to perform well for
-our simulated and empirical data so far.
-
-Note that parameters must be estimated for both autosomal aneuploidies,
-and….
+We can also simply print the first 10 lines (this value can be changed,
+or set to Inf to print all lines) of the merged karyotype calls to the
+screen using the *printChASM()* function
 
 ``` r
-# Calculate parameters for the Dirichlet prior for autosomal aneuploidies
-inDirichlet.auto.example <- makeDirichlet(
-  indat.auto.example,
-  refType = 'auto',
-  min_reads = 1e5,
-  max_reads = 1e9
-)
+printChASM(inChASM = example_calls, lines = 10)
+#> # A tibble: 222 × 11
+#>    sample  protocol unusual flags autosomal_call sca_call C_call autosomal_total
+#>    <chr>   <chr>    <lgl>   <int> <chr>          <chr>    <chr>            <dbl>
+#>  1 Ind_1_1 protoco… TRUE        3 No Aneuploidy  XX       No Si…           89539
+#>  2 Ind_1_2 protoco… FALSE       1 No Aneuploidy  XX       No Si…           48376
+#>  3 Ind_3_1 protoco… TRUE        2 No Aneuploidy  XY       No Si…          113335
+#>  4 Ind_4_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…          406472
+#>  5 Ind_5_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…           27731
+#>  6 Ind_6_1 protoco… FALSE       0 No Aneuploidy  XY       No Si…          681256
+#>  7 Ind_7_2 protoco… FALSE       0 No Aneuploidy  XY       No Si…          130928
+#>  8 Ind_9_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…          425906
+#>  9 Ind_15… protoco… FALSE       1 No Aneuploidy  XX       No Si…            3364
+#> 10 Ind_17… protoco… FALSE       1 No Aneuploidy  XY       No Si…           11699
+#> # ℹ 212 more rows
+#> # ℹ 3 more variables: sca_total <dbl>, automsomal_maxP <dbl>, sca_maxP <dbl>
 ```
 
-the sex chromosomal aneuploidies.
+and the entire result can be saved as a TSV (to be opened in Excel say)
+using the *saveChASM()* function,
 
 ``` r
-# Calculate parameters for the Dirichlet prior for sex chromosomal aneuploidies
-# (Warning: this one produces a plot for making sure the clustering makes sense!)
-inDirichlet.sca.example <- makeDirichlet(
-  indat.sca.example,
-  refType = 'sca',
-  min_reads = 1e5,
-  max_reads = 1e9
-)
+saveChASM(inChASM = example_calls)
+`
+``
+Note that you can save the TSV with the sample names sorted alphabetically by setting the sort_by_samplename parameter to TRUE as follows:
 ```
-
-![](example_analysis_files/figure-html/unnamed-chunk-7-1.png)
-
-Importantly, when estimating the parameters for the sex chromosomes, we
-generate a plot of the “training clusters”. Internally, the function
-filters outliers, and clusters the data into XX and XY clusters. Make
-sure that this plot looks reasonable, otherwise your model will be
-poorly trained and the resulting calls will be meaningless.
-
-We now call the karyotypes using the callKaryotypes() function. Again,
-we do this for autosomal and sex chromosomal aneuploidies separately,
-but the function will detect which reference type we are using. This
-function requires the read count data, and the Dirichlet parameters.
-Note that you must still supply match read count and Dirichlet inputs
-for either autosomal or sex chromosomal references as, (for example) if
-you supply read counts for the autosomes but the Dirichlet parameters
-for the sex chromosomal aneuploidies, the method will fail and throw an
-error (complaining about missing column names!).
-
-The only additional input is the (prior) estimated proportion of
-“contaminated” samples (here 0.01 or 1%). This value must be considered
-using either experience, or using other methods to estimate
-contamination.
-
-Here we perform calling for autosomal aneuploidies….
 
 ``` r
-# Makes karyotype calls for autosomal aneuploidies
-calls.auto.example <- callKaryotypes(
-  indat.auto.example,
-  inDirichlet.auto.example,
-  p_contamination = 0.01
-)
+saveChASM(inChASM = example_calls, sort_by_samplename = TRUE)
 ```
 
-and then sex chromosomal aneuploidies.
+### Autosomal aneuploidies
+
+We find that individual “Ind_255_1” might carry trisomy 21, and we can
+inspect this by generating a diagnostic plot.
 
 ``` r
-# Makes karyotype calls for sex chromosomal aneuploidies
-calls.sca.example <- callKaryotypes(
-  indat.sca.example,
-  inDirichlet.sca.example,
-  p_contamination = 0.01
-)
+plot_diagnostic(IDs = 'Ind_255_1', inChASM = example_calls, addLabels = TRUE)
 ```
 
-Next, we calculate Z-scores for how different the observed proportion of
-reads mapping to each autosomal chromosome is compared to what was
-expected (given the posterior Dirichlet-multinomial distribution). These
-values have two uses.
-
-First, we can use them to show that significantly more/less reads than
-expected mapped to chromosomes of interest (13, 18 or 21), strengthening
-the evidence for the associated autosomal aneuploidies.
-
-Second, we might like to look at whether karyotype calls might be due to
-the true presence of the karyotype, or simply because of abnormal
-sequencing. For example, failed sequencing runs may cause reads to map
-almost randomly to chromosomes. To address this, we calculate a
-chi-squared statistic based on these Z-scores (but ignoring chromosomes
-13, 18 or 21). Here we also calculate the number of significant
-Z-scores, and call this total “flag”.
-
-``` r
-# Calculate Z-scores
-z.scores.example <- makeZscores(
-  indat.auto.example,
-  refType = "auto",
-  min_reads = 1e3,
-  max_reads = 1e9
-)
-z.scores_diagnostic.example <- makeZscores(
-  indat.auto.example,
-  refType = 'diagnostic',
-  min_reads = 1e3,
-  max_reads = 1e9
-)
-```
-
-Inspecting the calls for the autosomal aneuploidies, we find that we
-have one individual of interest. We encourage users to restrict
-confident calls to where: (a) there are at least 60,000 reads, (b) the
-maxP (the posterior probability of the karyotype) is greater than 0.95,
-(c) that the sample is not unusual and (d) the number of flags is less
-than three.
-
-Note that we use the diagnostic z-scores here, and *not* the autosomal
-z-scores, because if the individual carries trisomy 21, then of course
-the read counts for chromosome 21 will be highly “unusual”!.
-
-``` r
-# Do we have any suspected autosomal aneuploidy cases?
-calls.auto.example %>%
-  dplyr::left_join(z.scores_diagnostic.example %>%
-                     dplyr::group_by(sample,p,unusual) %>%
-                     dplyr::summarise(flag=sum(flag)) %>%
-                     dplyr::ungroup(),
-                   by=c('sample'='sample')) %>%
-  dplyr::select(sample,P_call,total,maxP,p,unusual,flag) %>%
-  dplyr::filter(P_call!='No Aneuploidy')
-#> `summarise()` has grouped output by 'sample', 'p'. You can override using the
-#> `.groups` argument.
-#> # A tibble: 1 × 7
-#>   sample    P_call      total  maxP     p unusual  flag
-#>   <chr>     <chr>       <dbl> <dbl> <dbl> <lgl>   <int>
-#> 1 Ind_255_1 Trisomy 21 254544     1 1.000 FALSE       0
-```
-
-Here, we find that individual “Ind_255_1” might carry trisomy 21, and we
-can inspect this by generating a diagnostic plot. Note that multiple IDs
-can be given in the IDs input, but adding too many at once can make the
-plot look too busy.
-
-``` r
-# Diagnostic plot for Trisomy 21
-plot_diagnostic(
-  IDs='Ind_255_1',
-  calls.auto = calls.auto.example,
-  calls.sca = calls.sca.example,
-  inDirichlet.auto = inDirichlet.auto.example,
-  inDirichlet.sca = inDirichlet.sca.example,
-  z.scores = z.scores.example,
-  min_reads = 6e4,
-  max_reads = 1e9,
-  addLabels = TRUE
-)
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_text()`).
-```
-
-![](example_analysis_files/figure-html/unnamed-chunk-12-1.png)
+![](example_analysis_files/figure-html/unnamed-chunk-9-1.png)
 
 This plot can be interpreted in the following way:
 
@@ -264,7 +230,8 @@ This plot can be interpreted in the following way:
     of interest using a repelled label. In this example, we can see that
     Ind_255_1 falls within the variation of other XX individuals (and
     the sex chromosomal karyotype was indeed XX in this case). This plot
-    can be used for assessing/confirming sex chromosomal aneuploidies.
+    can be used for assessing/confirming sex chromosomal aneuploidies,
+    or assessing genetic sex.
 
 2.  This plot shows the Z-score per chromosome for the individuals of
     interest, compared to five randomly selected individuals. here we
@@ -275,86 +242,110 @@ This plot can be interpreted in the following way:
 3.  This plot shows the increase/decrease in the proportion of reads
     mapping to each chromosome, compared to the “average” XY individual.
     Here we see that there is approximately 48% more reads mapping to
-    chromosome 21 than expect, consistent with an extra copy of
+    chromosome 21 than expected, consistent with an extra copy of
     chromosome 21 being present (trisomy 21). We also see that we have
     twice as many copies of the X chromosome and basically no copies of
     the Y chromosome (compared to XY), consistent with XX. We also see
-    that Ind_255_1 was produced using “protocol 1” and had 268,132
-    mapped reads.
+    (from the legend) that Ind_255_1 was produced using “protocol 1” and
+    had 268,132 mapped reads.
+
+### Sex chromosomal aneuploidies
 
 We now generate a diagnostic plot for an individual who carries the sex
-chromosomal aneuploidy XXX. We see three possible cases, although with
-only 1,579 reads, Ind_75_1 should be considered with caution, or even
-ignored. We investigate Ind_71_1.
+chromosomal aneuploidy XXX. We see two possible cases with at least
+60,000 reads, and investigate both (note that multiple IDs can be given
+in the IDs input, but adding too many at once can make the plot look too
+busy).
 
 ``` r
-# Do we have any suspected sex chromosomal aneuploidy cases?
-calls.sca.example %>%
-  dplyr::left_join(z.scores_diagnostic.example %>%
-                     dplyr::group_by(sample,p,unusual) %>%
-                     dplyr::summarise(flag=sum(flag)) %>%
-                     dplyr::ungroup(),
-                   by=c('sample'='sample')) %>%
-  dplyr::select(sample,P_call,total,maxP,p,unusual,flag) %>%
-  dplyr::filter(!P_call%in%c('XX','XY'))
-#> `summarise()` has grouped output by 'sample', 'p'. You can override using the
-#> `.groups` argument.
-#> # A tibble: 3 × 7
-#> # Rowwise: 
-#>   sample    P_call  total  maxP     p unusual  flag
-#>   <chr>     <chr>   <dbl> <dbl> <dbl> <lgl>   <int>
-#> 1 Ind_71_1  XXX     76444 1     0.368 FALSE       0
-#> 2 Ind_75_1  XXY      1579 0.992 0.311 FALSE       0
-#> 3 Ind_185_1 XXX    225713 1     0.885 FALSE       1
+plot_diagnostic(
+  IDs = c('Ind_71_1', 'Ind_185_1'),
+  inChASM = example_calls,
+  addLabels = TRUE
+)
 ```
+
+![](example_analysis_files/figure-html/unnamed-chunk-10-1.png)
 
 Note here that:
 
-1.  The individual sits to the right of the XX cluster, consistent with
+1.  Both individuals sit to the right of the XX cluster, consistent with
     XXX.
-2.  Has no flags and is not “unusual”.
-3.  Appears to carry three times as much of chromosome X (296%), and
-    virtually nothing from chromosome Y (compared to XY), consistent
-    with XXX.
+2.  Ind_185_1 one flag (chromosome 19) but is not “unusual”, but
+    Ind_71_1 has 4 flags and is “unusual”. However, Ind_71_1 has only
+    76,444 reads, and the z-scores are only *just* outside of the dashed
+    lines. Hence, Ind_71_1 deserves careful consideration.
+3.  Both individuals to carry almost three times as much of chromosome X
+    (275% and 296%), and virtually nothing from chromosome Y (compared
+    to XY), consistent with XXX.
+
+Given the seemingly borderline case of Ind_71_1, we now consider how a
+“well-behaved” and a “poorly-behaved” sample might look.
+
+### The limits of how samples can behave
+
+Finally, we show a diagnostic plot for two individuals: an individual
+with read counts that behave well (Ind_4_1), and an individual where the
+read counts are behaving strangely (Ind_66_1).
 
 ``` r
-# Test diagnostic plot is working!
 plot_diagnostic(
-  IDs='Ind_71_1',
-  calls.auto = calls.auto.example,
-  calls.sca = calls.sca.example,
-  inDirichlet.auto = inDirichlet.auto.example,
-  inDirichlet.sca = inDirichlet.sca.example,
-  z.scores = z.scores.example,
-  min_reads = 6e4,
-  max_reads = 1e9,
+  IDs = c('Ind_4_1', 'Ind_66_1'),
+  inChASM = example_calls,
   addLabels = TRUE
 )
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_text()`).
 ```
 
-![](example_analysis_files/figure-html/unnamed-chunk-14-1.png)
+![](example_analysis_files/figure-html/unnamed-chunk-11-1.png)
 
-Finally, we show a diagnostic for two individuals. An individual with
-read counts that behave well (Ind_22_1), and an individual where the
-read counts are behaving poorly (Ind_66_1).
+We note that both individuals appear to have an XY karyotype, and that
+Ind_4_1 has no significant per-chromosome Z-scores (panel B), and
+approximately 100% of the reads that we expect to see (panel C).
+However, it is a very different story for Ind_66_1 with many of the
+Z-scores (green squares) outside of the dashed lines. It may now be a
+good idea to look at reasons for why the data generated from Ind_66_1
+has behaved so strangely!
+
+## Pre-processing your data using our script
+
+To produce the required input file for RChASM, download and use the
+script “CHASM_input” (which requires bash, perl, samtools and bedtools
+to be installed). The script takes as input (-i) a text file where each
+line is a path to a bam file, and (-o) a name for your output file. We
+also include a number of optional parameters for fine-tuning your
+analysis. These include:
+
+- (-p) Protocol name: the name of the data generation protocol for these
+  samples. If samples come from different protocols, we suggest running
+  this script for each protocol separately.
+- (-b) Bed file: a bed file for restricting to reads regions of
+  interest. This may be of use in cases where capture was used.
+- (-w) Base pair width: *if* a bed file has been given, this allows for
+  some “wiggle room” around the target sites. We include this due to the
+  fact that probe design often attracts reads to not just the site of
+  interest, but also to a region around the sites.
+- (-q) Minimum mapping quality: minimum allowable mapping (Phred)
+  quality score for reads. The default is 25.
+- (-l) Minimum read length: minimum allowable read length in bp. The
+  default is 35.
+- (-N) Header flag: if given, the output will not include the column
+  names.
+- (-h) Help: view the help file.
+
+**Using the console**, and in a folder with the a text file called
+“Input_Bams.txt”, the bash script (CHASM_input) can produce data for
+RChASM using the following command. Please note that this is *not* run
+in R.
 
 ``` r
-# Test diagnostic plot is working!
-plot_diagnostic(
-  IDs=c('Ind_22_1','Ind_66_1'),
-  calls.auto = calls.auto.example,
-  calls.sca = calls.sca.example,
-  inDirichlet.auto = inDirichlet.auto.example,
-  inDirichlet.sca = inDirichlet.sca.example,
-  z.scores = z.scores.example,
-  min_reads = 6e4,
-  max_reads = 1e9,
-  addLabels = TRUE
-)
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_text()`).
+bash
+CHASM_input - i
+Input_Bams.txt - o
+Output_Table.tsv
 ```
 
-![](example_analysis_files/figure-html/unnamed-chunk-15-1.png)
+This can then be read into R using the *read.tsv()* function
+
+``` r
+example_data <- readr::read_tsv('/path_to_folder/Output_Table.tsv')
+```
