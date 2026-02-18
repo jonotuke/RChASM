@@ -12,3 +12,4 @@ RChASM.code-workspace
 ^doc$
 ^Meta$
 ^submission/
+^cran-comments\.md$
