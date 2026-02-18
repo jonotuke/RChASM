@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Adam B. Rohrlach**. Author.
+- **Adam B. Rohrlach**. Author, copyright holder.
   [](https://orcid.org/0000-0002-4204-5018)
 
 - **Jono Tuke**. Author, maintainer.
