@@ -12,13 +12,13 @@
 
 ## Citation
 
-Rohrlach A, Tuke J, Haak W (2026). *RChASM: RChASM: A Statistically
-Rigorous Method for the Detection of Chromosomal Aneuploidies in Ancient
-DNA Studies*. R package version 0.0.0.9000,
+Rohrlach A, Tuke J, Haak W (2026). *RChASM: A Statistically Rigorous
+Method for the Detection of Chromosomal Aneuploidies in Ancient DNA
+Studies*. R package version 0.0.0.9000,
 <https://jonotuke.github.io/RChASM/>.
 
     @Manual{,
-      title = {RChASM: RChASM: A Statistically Rigorous Method for the Detection of Chromosomal Aneuploidies in Ancient DNA Studies},
+      title = {RChASM: A Statistically Rigorous Method for the Detection of Chromosomal Aneuploidies in Ancient DNA Studies},
       author = {Adam B. Rohrlach and Jono Tuke and Wolfgang Haak},
       year = {2026},
       note = {R package version 0.0.0.9000},

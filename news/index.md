@@ -2,7 +2,13 @@
 
 ## RChASM (development version)
 
-- Initial CRAN submission. This is the first submission of the RChASM
-  package. It is an R implementation of ChASM (Chromosomal Aneuploidy
-  Screening Methodology): a statistically rigorous Bayesian approach for
-  screening data sets for autosomal and sex chromosomal aneuploidies
+## RChASM 1.0.0
+
+- Initial CRAN submission.
+
+## RChASM 0.0.0.9000
+
+### Major changes
+
+- This is the first development version. It has the primary functions.
+- Also set up a pkgdown website to support.
