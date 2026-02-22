@@ -16,3 +16,8 @@ Paper in review process, will add as citationa and also in DESCRIPTION once comp
 
 Changed all cases where T was used to TRUE in callKaryotypes() and also in ddirichletultinomial()
 
+* You write information messages to the console that cannot be easily
+suppressed.
+
+All uses of cat have been changed to stop(), warning() or message() depending on context. 
+
