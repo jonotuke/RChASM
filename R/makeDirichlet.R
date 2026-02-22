@@ -123,15 +123,15 @@ makeDirichlet <- function(
 
   # Protocols require enough observations to estimte priors....
   if (!all(protocolsN$n > length(columnIDs))) {
-    base::cat('Protocols without enough observations:\n')
-    protocolsN %>%
+    # base::cat('Protocols without enough observations:\n')
+    message('Protocols without enough observations:\n')
+    stop_message <- protocolsN %>%
       dplyr::filter(n < length(columnIDs)) %>%
       dplyr::mutate(protocol_n = paste0(protocol, ' (n=', n, ')')) %>%
       dplyr::pull(protocol_n) %>%
       base::paste0(collapse = ', ') %>%
-      base::paste0('\n') %>%
-      base::cat() %>%
-      base::stop()
+      base::paste0('\n')
+    stop(stop_message)
   }
 
   # auto or sca?

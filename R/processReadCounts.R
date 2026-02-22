@@ -64,7 +64,10 @@ processReadCounts <- function(
   # If protocol is missing, add a default
   # Then make sure only required columns are carried through
   if (!('protocol' %in% names(rawReadCountsIn))) {
-    base::cat(
+    # base::cat(
+    #   "Warning: no protocol set, assuming all data to come from the same sequencing type (called 'default').\n"
+    # )
+    warning(
       "Warning: no protocol set, assuming all data to come from the same sequencing type (called 'default').\n"
     )
     rawReadCountsIn <- rawReadCountsIn %>%

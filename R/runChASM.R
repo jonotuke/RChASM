@@ -35,7 +35,10 @@ runChASM <- function(
     base::stop("rawReadCountsIn must be a dataframe or a tibble.")
   }
   if (!("protocol" %in% names(rawReadCountsIn))) {
-    base::cat(
+    # base::cat(
+    #   "Warning: no protocol set, assuming all data to come from the same sequencing type (called 'default').\n"
+    # )
+    message(
       "Warning: no protocol set, assuming all data to come from the same sequencing type (called 'default').\n"
     )
     rawReadCountsIn <- rawReadCountsIn %>% dplyr::mutate(protocol = "default")

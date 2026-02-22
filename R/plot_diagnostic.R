@@ -67,12 +67,11 @@ plot_diagnostic <- function(
       . / 22
     }
   if (Nobs == 0) {
-    sprintf(
+    stop_message <- sprintf(
       'Samples %s are not in the data (stopping).\n',
       paste0(IDs, collapse = ', ')
-    ) %>%
-      cat()
-    stop()
+    )
+    stop(stop_message)
   }
 
   # calls.auto must be a data frame or a tibble

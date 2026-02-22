@@ -168,7 +168,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(1, 1, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.XY),
@@ -176,7 +176,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(2, 0, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.XX),
@@ -184,7 +184,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(2, 1, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.XXY),
@@ -192,7 +192,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(1, 0, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.X),
@@ -200,7 +200,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(3, 0, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.XXX),
@@ -208,7 +208,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
           nvector = base::c(X, Y, auto),
           avector = base::c(ax, ay, az),
           cvector = base::c(1, 2, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(p.XYY),
@@ -222,7 +222,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
             correction = 1e-6
           ),
           cvector = base::c(1, 1, 1),
-          log = T,
+          log = TRUE,
           correction = correction
         ) +
           base::log(pc) +
@@ -363,7 +363,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
             a22
           ),
           cvector = makeC(1, 0, 22),
-          log = T,
+          log = TRUE,
           correction = 0
         ) +
           base::log(p.n),
@@ -417,7 +417,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
             a22
           ),
           cvector = makeC(1.5, 13, 22),
-          log = T,
+          log = TRUE,
           correction = 0
         ) +
           base::log(p.13),
@@ -471,7 +471,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
             a22
           ),
           cvector = makeC(1.5, 18, 22),
-          log = T,
+          log = TRUE,
           correction = 0
         ) +
           base::log(p.18),
@@ -525,7 +525,7 @@ callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
             a22
           ),
           cvector = makeC(1.5, 21, 22),
-          log = T,
+          log = TRUE,
           correction = 0
         ) +
           base::log(p.21)

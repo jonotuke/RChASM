@@ -4,7 +4,7 @@
 \alias{ddirichletultinomial}
 \title{calculate Dirichlet probabilities with filtering}
 \usage{
-ddirichletultinomial(nvector, avector, cvector, log = T, correction = 1e-06)
+ddirichletultinomial(nvector, avector, cvector, log = TRUE, correction = 1e-06)
 }
 \arguments{
 \item{nvector}{observed read counts}

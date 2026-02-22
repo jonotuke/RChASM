@@ -11,7 +11,7 @@ ddirichletultinomial <- function(
   nvector,
   avector,
   cvector,
-  log = T,
+  log = TRUE,
   correction = 1e-6
 ) {
   Cvector <- base::c(cvector) %>%
