@@ -70,6 +70,8 @@ for a tutorial
   : processReadCounts
 - [`runChASM()`](https://jonotuke.github.io/RChASM/reference/runChASM.md)
   : Title
+- [`saveChASM()`](https://jonotuke.github.io/RChASM/reference/saveChASM.md)
+  : A function for saving the results of a ChASM analysis as a tsv
 - [`summary_calls()`](https://jonotuke.github.io/RChASM/reference/summary_calls.md)
   : summary_calls
 

@@ -80,6 +80,21 @@
     <p>combined calls</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="runChASM.html">runChASM</a></span><span class="op">(</span>rawReadCountsIn <span class="op">=</span> <span class="va">example_data</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="summary_calls-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">summary_calls</span><span class="op">(</span>inChASM <span class="op">=</span> <span class="va">example_calls</span>, minTotal <span class="op">=</span> <span class="fl">6e4</span>, minPosterior <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample  unusual flags autosomal_call sca_call C_call autosomal_total sca_total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Ind_71… TRUE        4 No Aneuploidy  XXX      No Si…           <span style="text-decoration: underline;">70</span>688     <span style="text-decoration: underline;">76</span>444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Ind_18… FALSE       1 No Aneuploidy  XXX      No Si…          <span style="text-decoration: underline;">209</span>933    <span style="text-decoration: underline;">225</span>713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Ind_25… FALSE       0 Trisomy 21     XX       No Si…          <span style="text-decoration: underline;">254</span>544    <span style="text-decoration: underline;">268</span>132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: automsomal_maxP &lt;dbl&gt;, sca_maxP &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

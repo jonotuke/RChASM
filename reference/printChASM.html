@@ -62,6 +62,29 @@
     <p>print output</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_calls</span> <span class="op">&lt;-</span> <span class="fu"><a href="runChASM.html">runChASM</a></span><span class="op">(</span>rawReadCountsIn <span class="op">=</span> <span class="va">example_data</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="printChASM-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">printChASM</span><span class="op">(</span>inChASM <span class="op">=</span> <span class="va">example_calls</span>, lines <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 222 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample  protocol unusual flags autosomal_call sca_call C_call autosomal_total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Ind_1_1 protoco… TRUE        3 No Aneuploidy  XX       No Si…           <span style="text-decoration: underline;">89</span>539</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Ind_1_2 protoco… FALSE       1 No Aneuploidy  XX       No Si…           <span style="text-decoration: underline;">48</span>376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Ind_3_1 protoco… TRUE        2 No Aneuploidy  XY       No Si…          <span style="text-decoration: underline;">113</span>335</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Ind_4_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…          <span style="text-decoration: underline;">406</span>472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Ind_5_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…           <span style="text-decoration: underline;">27</span>731</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Ind_6_1 protoco… FALSE       0 No Aneuploidy  XY       No Si…          <span style="text-decoration: underline;">681</span>256</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Ind_7_2 protoco… FALSE       0 No Aneuploidy  XY       No Si…          <span style="text-decoration: underline;">130</span>928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Ind_9_1 protoco… FALSE       0 No Aneuploidy  XX       No Si…          <span style="text-decoration: underline;">425</span>906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Ind_15… protoco… FALSE       1 No Aneuploidy  XX       No Si…            <span style="text-decoration: underline;">3</span>364</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Ind_17… protoco… FALSE       1 No Aneuploidy  XY       No Si…           <span style="text-decoration: underline;">11</span>699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 212 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: sca_total &lt;dbl&gt;, automsomal_maxP &lt;dbl&gt;, sca_maxP &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
