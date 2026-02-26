@@ -7,6 +7,11 @@
 #' @returns saves results
 #'
 #' @export
+#' @examples
+#' example_calls <- runChASM(rawReadCountsIn = example_data)
+#' \dontrun{
+#' saveChASM(inChASM = example_calls)
+#' }
 saveChASM <- function(inChASM, file, sort_by_samplename = FALSE) {
   # A function for saving the results of a ChASM analysis as a tsv
   # inChASM: the result of a full ChASM analysis (output from runChASM)

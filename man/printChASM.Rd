@@ -17,3 +17,8 @@ print output
 \description{
 A function to print the result of the combined analysis to screen
 }
+\examples{
+example_calls <- runChASM(rawReadCountsIn = example_data)
+printChASM(inChASM = example_calls, lines = 10)
+
+}

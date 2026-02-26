@@ -21,9 +21,10 @@ utils::globalVariables(
 #' @param max_reads max number of reads per sample
 #' @param show_plot boolean to show plot
 #'
+#' @importFrom mclust mclustBIC
+#'
 #' @returns Dirichlet prior
 #'
-#' @export
 makeDirichlet <- function(
   indat,
   refType,

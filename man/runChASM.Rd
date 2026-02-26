@@ -35,3 +35,7 @@ summary
 \description{
 Title
 }
+\examples{
+runChASM(rawReadCountsIn = example_data)
+
+}

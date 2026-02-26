@@ -89,9 +89,10 @@ and the entire result can be saved as a TSV (to be opened in Excel say) using th
 
 ```{r,eval=FALSE}
 saveChASM(inChASM = example_calls)
-`
-``
+```
+
 Note that you can save the TSV with the sample names sorted alphabetically by setting the sort_by_samplename parameter to TRUE as follows:
+
 ```{r,eval=FALSE}
 saveChASM(inChASM = example_calls, sort_by_samplename = TRUE)
 ```
@@ -102,7 +103,6 @@ We find that individual "Ind_255_1" might carry trisomy 21, and we can inspect t
 
 ```{r,fig.dim=c(7.2,5),warning=FALSE}
 plot_diagnostic(IDs = 'Ind_255_1', inChASM = example_calls, addLabels = TRUE)
-
 ```
 
 This plot can be interpreted in the following way:

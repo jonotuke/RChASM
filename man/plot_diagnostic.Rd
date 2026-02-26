@@ -19,3 +19,8 @@ plots
 \description{
 Plots diagnostic plots
 }
+\examples{
+example_calls <- runChASM(rawReadCountsIn = example_data)
+plot_diagnostic(IDs = 'Ind_255_1', inChASM = example_calls, addLabels = TRUE)
+
+}

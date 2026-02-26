@@ -6,6 +6,10 @@
 #' @returns print output
 #'
 #' @export
+#' @examples
+#' example_calls <- runChASM(rawReadCountsIn = example_data)
+#' printChASM(inChASM = example_calls, lines = 10)
+#'
 printChASM <- function(inChASM, lines = 20) {
   # A function to print the result of the combined analysis to screen
   # inChASM: the result of a full ChASM analysis (output from runChASM)

@@ -44,7 +44,6 @@ utils::globalVariables(
 #'
 #' @returns outreadcounts
 #'
-#' @export
 processReadCounts <- function(
   rawReadCountsIn,
   refType,

@@ -60,7 +60,6 @@ utils::globalVariables(
 #'
 #' @returns karyotype calls
 #'
-#' @export
 callKaryotypes <- function(indat, inDirichlet, p_contamination = 0.1) {
   # Is it SCA or Auto?
   refType <- base::ifelse(

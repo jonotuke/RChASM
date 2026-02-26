@@ -29,3 +29,8 @@ combined calls
 \description{
 Combine both autosomal and sex chromosomal analyses into one output
 }
+\examples{
+example_calls <- runChASM(rawReadCountsIn = example_data)
+summary_calls(inChASM = example_calls, minTotal = 6e4, minPosterior = 0.95)
+
+}

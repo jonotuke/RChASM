@@ -22,6 +22,10 @@ utils::globalVariables(
 #' @returns combined calls
 #'
 #' @export
+#' @examples
+#' example_calls <- runChASM(rawReadCountsIn = example_data)
+#' summary_calls(inChASM = example_calls, minTotal = 6e4, minPosterior = 0.95)
+#'
 summary_calls <- function(
   inChASM,
   minTotal = 6e4,

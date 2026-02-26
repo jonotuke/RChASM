@@ -22,7 +22,6 @@ utils::globalVariables(
 #'
 #' @returns Z-scores
 #'
-#' @export
 makeZscores <- function(
   indat,
   refType = 'auto',

@@ -21,3 +21,19 @@ suppressed.
 
 All uses of cat have been changed to stop(), warning() or message() depending on context. 
 
+## Review 2026-02-26
+
+Reviewer: benjamin.altmann@wu.ac.at
+
+* Please reduce the length of the title to less than 65 characters.
+
+Changed to 
+Detection of Chromosomal Aneuploidies in Ancient DNA Studies
+
+* Please add small executable examples in your Rd-files to illustrate the use of the exported function but also enable automatic testing.
+
+Added examples for each exported file. 
+
+Decided that some files are better not exported as internal, so changed. 
+
+Also the package mclust is not importing mclustBIC automatically, so added an importFrom so available when call mclust. 

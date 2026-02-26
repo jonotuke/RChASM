@@ -14,7 +14,6 @@ utils::globalVariables(
 #'
 #' @returns combined data
 #'
-#' @export
 combineData <- function(
   calls.auto,
   calls.sca,

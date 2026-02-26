@@ -1,5 +1,5 @@
 Package: RChASM
-Title: A Statistically Rigorous Method for the Detection of Chromosomal Aneuploidies in Ancient DNA Studies
+Title: Detection of Chromosomal Aneuploidies in Ancient DNA Studies
 Version: 1.0.0
 Authors@R: 
     c(
@@ -46,7 +46,8 @@ Imports:
     sirt,
     stringr,
     tibble,
-    tidyr
+    tidyr, 
+    readr
 LazyData: true
 Suggests: 
     knitr,

@@ -11,6 +11,9 @@
 #' @returns summary
 #'
 #' @export
+#' @examples
+#' runChASM(rawReadCountsIn = example_data)
+#'
 runChASM <- function(
   rawReadCountsIn,
   minSamplesPerProtocol = 30,
@@ -100,24 +103,24 @@ runChASM <- function(
     base::stop("printMissingIDs must be TRUE or FALSE")
   }
 
-  readcounts.auto <- RChASM::processReadCounts(
+  readcounts.auto <- processReadCounts(
     rawReadCountsIn = rawReadCountsIn,
     refType = 'auto',
     minSamplesPerProtocol = minSamplesPerProtocol
   )
-  readcounts.sca <- RChASM::processReadCounts(
+  readcounts.sca <- processReadCounts(
     rawReadCountsIn = rawReadCountsIn,
     refType = 'sca',
     minSamplesPerProtocol = minSamplesPerProtocol
   )
 
-  dirichlet.auto <- RChASM::makeDirichlet(
+  dirichlet.auto <- makeDirichlet(
     indat = readcounts.auto,
     refType = 'auto',
     min_reads = min_reads,
     max_reads = max_reads
   )
-  dirichlet.sca <- RChASM::makeDirichlet(
+  dirichlet.sca <- makeDirichlet(
     indat = readcounts.sca,
     refType = 'sca',
     min_reads = min_reads,
@@ -125,24 +128,24 @@ runChASM <- function(
     show_plot = show_plot
   )
 
-  z.scores.auto <- RChASM::makeZscores(
+  z.scores.auto <- makeZscores(
     indat = readcounts.auto,
     refType = 'auto',
     min_reads = min_reads,
     max_reads = max_reads
   )
 
-  karyotypes.auto <- RChASM::callKaryotypes(
+  karyotypes.auto <- callKaryotypes(
     indat = readcounts.auto,
     inDirichlet = dirichlet.auto,
     p_contamination = p_contamination
   )
-  karyotypes.sca <- RChASM::callKaryotypes(
+  karyotypes.sca <- callKaryotypes(
     indat = readcounts.sca,
     inDirichlet = dirichlet.sca,
     p_contamination = p_contamination
   )
-  karyotypes <- RChASM::combineData(
+  karyotypes <- combineData(
     calls.auto = karyotypes.auto,
     calls.sca = karyotypes.sca,
     z.scores = z.scores.auto,
