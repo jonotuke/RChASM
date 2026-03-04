@@ -19,7 +19,7 @@ applicable to studies with at least 23 samples.
 
 The Dirichlet-multinomial is a Bayesian combination of the Dirichlet
 distribution and the Multinomial distribution. The combination of these
-two distributions do the following things:
+two distributions does the following things:
 
 1.  Multinomial distribution: allows us to account for variability in
     the observed proportions due simply to sampling depth, measured here
@@ -59,12 +59,12 @@ data(example_data)
 
 ## Running the analysis using runChASM()
 
-At this stage, if you have “mixed data” that uses different data
-generation protocols (called protocol from here forward), you can
-include this in a column titled “protocol”. If this is not included, the
-function will assume each row represents data using the same sequencing
-protocol (and assigns a column with the entry “default”). Essentially,
-RChASM treats the different protocols as separate analyses anyway.
+At this stage, if you have “mixed data” that uses different protocols,
+you can include this in a column titled “protocol”. If this is not
+included, the function will assume each row represents data using the
+same sequencing protocol (and assigns a column with the entry
+“default”). Essentially, RChASM treats the different protocols as
+separate analyses anyway.
 
 ``` r
 # An example of data that RChASM analyses (omitting columns for chromosomes 3 to 20).
@@ -153,14 +153,14 @@ Now that we have run RChASM, we can see if we have any samples with
 uncommon karyotypes. We do this by passing the RChASM results to the
 *summary_calls()* function. This function simply returns any individuals
 that do not have a karyotype of XX or XY, or has a karyotype of trisomy
-13, 18 or 21. You can choose to further for samples with a lower bound
-on the number of observed reads (again we suggest 60,000 reads), or the
-maximum posterior probability (we suggest 0.95 in general, and 0.99 for
-uncommon karyotypes). You can also omit samples that are “unusual”
-(*i.e.*, that have a significant chi-squared goodness-of-fit statistic).
-However, as this statistic can be quite sensitive, we encourage users to
-inspect this statistic in context with the z-score plot (see panel B in
-the diagnostic plots ahead).
+13, 18 or 21. You can choose to further filter for samples with a lower
+bound on the number of observed reads (again we suggest 60,000 reads),
+or the maximum posterior probability (we suggest 0.95 in general, and
+0.99 for uncommon karyotypes). You can also omit samples that are
+“unusual” (*i.e.*, that have a significant chi-squared goodness-of-fit
+statistic). However, as this statistic can be quite sensitive, we
+encourage users to inspect this statistic in context with the z-score
+plot (see panel B in the diagnostic plots ahead).
 
 ``` r
 summary_calls(inChASM = example_calls, minTotal = 6e4, minPosterior = 0.95)
@@ -307,7 +307,7 @@ Z-scores (green squares) outside of the dashed lines. It may now be a
 good idea to look at reasons for why the data generated from Ind_66_1
 has behaved so strangely!
 
-## Pre-processing your data using our script
+\## Pre-processing your data using our script
 
 To produce the required input file for RChASM, download and use the
 script
@@ -334,16 +334,13 @@ of optional parameters for fine-tuning your analysis. These include:
   names.
 - (-h) Help: view the help file.
 
-**Using the console**, and in a folder with the script called
-“Input_Bams.txt”, the bash script (CHASM_input) can produce data for
-RChASM using the following command. Please note that this is *not* run
-in R.
+**Using the console**, and in a folder with the a file called
+“Input_Bams.txt” (full of paths to each bam file you wish to process),
+the bash script (CHASM_input) can produce data for RChASM using the
+following command. Please note that this is *not* run in R.
 
-``` r
-bash
-CHASM_input - i
-Input_Bams.txt - o
-Output_Table.tsv
+``` bash
+bash CHASM_input - i Input_Bams.txt - o Output_Table.tsv
 ```
 
 This can then be read into R using the *read.tsv()* function

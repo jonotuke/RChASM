@@ -81,7 +81,7 @@ from a user-provided training data set. This means that RChASM is only
 applicable to studies with at least 23 samples.</p>
 <p>The Dirichlet-multinomial is a Bayesian combination of the Dirichlet
 distribution and the Multinomial distribution. The combination of these
-two distributions do the following things:</p>
+two distributions does the following things:</p>
 <ol style="list-style-type: decimal">
 <li>Multinomial distribution: allows us to account for variability in
 the observed proportions due simply to sampling depth, measured here by
@@ -118,12 +118,12 @@ data set, which is loaded from the RChASM package using the
 <div class="section level2">
 <h2 id="running-the-analysis-using-runchasm">Running the analysis using runChASM()<a class="anchor" aria-label="anchor" href="#running-the-analysis-using-runchasm"></a>
 </h2>
-<p>At this stage, if you have “mixed data” that uses different data
-generation protocols (called protocol from here forward), you can
-include this in a column titled “protocol”. If this is not included, the
-function will assume each row represents data using the same sequencing
-protocol (and assigns a column with the entry “default”). Essentially,
-RChASM treats the different protocols as separate analyses anyway.</p>
+<p>At this stage, if you have “mixed data” that uses different
+protocols, you can include this in a column titled “protocol”. If this
+is not included, the function will assume each row represents data using
+the same sequencing protocol (and assigns a column with the entry
+“default”). Essentially, RChASM treats the different protocols as
+separate analyses anyway.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example of data that RChASM analyses (omitting columns for chromosomes 3 to 20).</span></span>
 <span><span class="va">example_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -212,9 +212,9 @@ sensible clusters for XX and XY in our data!</p>
 uncommon karyotypes. We do this by passing the RChASM results to the
 <em>summary_calls()</em> function. This function simply returns any
 individuals that do not have a karyotype of XX or XY, or has a karyotype
-of trisomy 13, 18 or 21. You can choose to further for samples with a
-lower bound on the number of observed reads (again we suggest 60,000
-reads), or the maximum posterior probability (we suggest 0.95 in
+of trisomy 13, 18 or 21. You can choose to further filter for samples
+with a lower bound on the number of observed reads (again we suggest
+60,000 reads), or the maximum posterior probability (we suggest 0.95 in
 general, and 0.99 for uncommon karyotypes). You can also omit samples
 that are “unusual” (<em>i.e.</em>, that have a significant chi-squared
 goodness-of-fit statistic). However, as this statistic can be quite
@@ -344,11 +344,7 @@ However, it is a very different story for Ind_66_1 with many of the
 Z-scores (green squares) outside of the dashed lines. It may now be a
 good idea to look at reasons for why the data generated from Ind_66_1
 has behaved so strangely!</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="pre-processing-your-data-using-our-script">Pre-processing your data using our script<a class="anchor" aria-label="anchor" href="#pre-processing-your-data-using-our-script"></a>
-</h2>
+<p>## Pre-processing your data using our script</p>
 <p>To produce the required input file for RChASM, download and use the
 script <a href="CHASM_input.sh">CHASM_input</a> (which requires bash,
 perl, samtools and bedtools to be installed). The script takes as input
@@ -373,19 +369,17 @@ default is 35.</li>
 names.</li>
 <li>(-h) Help: view the help file.</li>
 </ul>
-<p><strong>Using the console</strong>, and in a folder with the script
-called “Input_Bams.txt”, the bash script (CHASM_input) can produce data
-for RChASM using the following command. Please note that this is
-<em>not</em> run in R.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bash</span></span>
-<span><span class="va">CHASM_input</span> <span class="op">-</span> <span class="va">i</span></span>
-<span><span class="va">Input_Bams.txt</span> <span class="op">-</span> <span class="va">o</span></span>
-<span><span class="va">Output_Table.tsv</span></span></code></pre></div>
+<p><strong>Using the console</strong>, and in a folder with the a file
+called “Input_Bams.txt” (full of paths to each bam file you wish to
+process), the bash script (CHASM_input) can produce data for RChASM
+using the following command. Please note that this is <em>not</em> run
+in R.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">bash</span> CHASM_input <span class="at">-</span> i Input_Bams.txt <span class="at">-</span> o Output_Table.tsv</span></code></pre></div>
 <p>This can then be read into R using the <em>read.tsv()</em>
 function</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="st">'/path_to_folder/Output_Table.tsv'</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
