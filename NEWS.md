@@ -1,6 +1,7 @@
 # RChASM (development version)
 
 # RChASM 1.0.0
+On CRAN
 
 # RChASM 1.0.0
 * Initial CRAN submission.
