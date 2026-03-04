@@ -310,11 +310,12 @@ has behaved so strangely!
 ## Pre-processing your data using our script
 
 To produce the required input file for RChASM, download and use the
-script “CHASM_input” (which requires bash, perl, samtools and bedtools
-to be installed). The script takes as input (-i) a text file where each
-line is a path to a bam file, and (-o) a name for your output file. We
-also include a number of optional parameters for fine-tuning your
-analysis. These include:
+script
+[CHASM_input](https://jonotuke.github.io/RChASM/articles/CHASM_input.sh)
+(which requires bash, perl, samtools and bedtools to be installed). The
+script takes as input (-i) a text file where each line is a path to a
+bam file, and (-o) a name for your output file. We also include a number
+of optional parameters for fine-tuning your analysis. These include:
 
 - (-p) Protocol name: the name of the data generation protocol for these
   samples. If samples come from different protocols, we suggest running
@@ -333,7 +334,7 @@ analysis. These include:
   names.
 - (-h) Help: view the help file.
 
-**Using the console**, and in a folder with the a text file called
+**Using the console**, and in a folder with the script called
 “Input_Bams.txt”, the bash script (CHASM_input) can produce data for
 RChASM using the following command. Please note that this is *not* run
 in R.
