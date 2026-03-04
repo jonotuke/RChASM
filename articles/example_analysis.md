@@ -201,11 +201,10 @@ using the *saveChASM()* function,
 
 ``` r
 saveChASM(inChASM = example_calls)
+`
+``
+Note that you can save the TSV with the sample names sorted alphabetically by setting the sort_by_samplename parameter to TRUE as follows:
 ```
-
-Note that you can save the TSV with the sample names sorted
-alphabetically by setting the sort_by_samplename parameter to TRUE as
-follows:
 
 ``` r
 saveChASM(inChASM = example_calls, sort_by_samplename = TRUE)
