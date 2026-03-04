@@ -311,7 +311,7 @@ has behaved so strangely!
 
 To produce the required input file for RChASM, download and use the
 script
-[CHASM_input](https://jonotuke.github.io/RChASM/scripts/CHASM_input.sh)
+[CHASM_input](https://jonotuke.github.io/RChASM/articles/CHASM_input.sh)
 (which requires bash, perl, samtools and bedtools to be installed). The
 script takes as input (-i) a text file where each line is a path to a
 bam file, and (-o) a name for your output file. We also include a number
