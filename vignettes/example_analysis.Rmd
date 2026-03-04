@@ -150,7 +150,7 @@ We note that both individuals appear to have an XY karyotype, and that Ind_4_1 h
 
 ## Pre-processing your data using our script
 
-To produce the required input file for RChASM, download and use the script "CHASM_input" (which requires bash, perl, samtools and bedtools to be installed). The script takes as input (-i) a text file where each line is a path to a bam file, and (-o) a name for your output file. We also include a number of optional parameters for fine-tuning your analysis. These include:
+To produce the required input file for RChASM, download and use the script [CHASM_input](CHASM_input.sh) (which requires bash, perl, samtools and bedtools to be installed). The script takes as input (-i) a text file where each line is a path to a bam file, and (-o) a name for your output file. We also include a number of optional parameters for fine-tuning your analysis. These include:
 
 - (-p) Protocol name: the name of the data generation protocol for these samples. If samples come from different protocols, we suggest running this script for each protocol separately.
 - (-b) Bed file: a bed file for restricting to reads regions of interest. This may be of use in cases where capture was used.
@@ -160,7 +160,7 @@ To produce the required input file for RChASM, download and use the script "CHAS
 - (-N) Header flag: if given, the output will not include the column names.
 - (-h) Help: view the help file.
 
-**Using the console**, and in a folder with the a text file called "Input_Bams.txt", the bash script (CHASM_input) can produce data for RChASM using the following command. Please note that this is _not_ run in R.
+**Using the console**, and in a folder with the script called "Input_Bams.txt", the bash script (CHASM_input) can produce data for RChASM using the following command. Please note that this is _not_ run in R.
 
 ```{r, eval=FALSE}
 bash
