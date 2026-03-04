@@ -1,5 +1,5 @@
 url: https://jonotuke.github.io/RChASM/
 template:
   bootstrap: 5
-  assets: inst/scripts/CHASM_input.sh
+  
 
