@@ -299,13 +299,13 @@ plot_diagnostic(
 
 ![](example_analysis_files/figure-html/unnamed-chunk-11-1.png)
 
-We note that both individuals appear to have an XY karyotype, and that
-Ind_4_1 has no significant per-chromosome Z-scores (panel B), and
-approximately 100% of the reads that we expect to see (panel C).
-However, it is a very different story for Ind_66_1 with many of the
-Z-scores (green squares) outside of the dashed lines. It may now be a
-good idea to look at reasons for why the data generated from Ind_66_1
-has behaved so strangely!
+We note that Ind_66_1 and Ind_4_1 appear to have an XY and XX karyotype,
+respectively, and that Ind_4_1 has no significant per-chromosome
+Z-scores (panel B), and approximately 100% of the reads that we expect
+to see (panel C). However, it is a very different story for Ind_66_1
+with many of the Z-scores (green squares) outside of the dashed lines.
+It may now be a good idea to look at reasons for why the data generated
+from Ind_66_1 has behaved so strangely!
 
 \## Pre-processing your data using our script
 
