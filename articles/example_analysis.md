@@ -307,7 +307,7 @@ with many of the Z-scores (green squares) outside of the dashed lines.
 It may now be a good idea to look at reasons for why the data generated
 from Ind_66_1 has behaved so strangely!
 
-\## Pre-processing your data using our script
+## Pre-processing your data using our script
 
 To produce the required input file for RChASM, download and use the
 script
