@@ -1,4 +1,5 @@
-# RChASM (development version)
+# RChASM 1.0.1
+Changed to vignette based on suggestions from reviewer for associated paper. 
 
 # RChASM 1.0.0
 On CRAN

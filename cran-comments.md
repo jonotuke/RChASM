@@ -37,3 +37,7 @@ Added examples for each exported file.
 Decided that some files are better not exported as internal, so changed. 
 
 Also the package mclust is not importing mclustBIC automatically, so added an importFrom so available when call mclust. 
+
+## Review 2026-04-22
+
+Changes to vignette based on suggestions from reviewer for associated paper to package. 
