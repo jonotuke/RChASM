@@ -1,0 +1,17 @@
+^RChASM\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.github$
+^README\.Rmd$
+RChASM.code-workspace
+^dev/
+^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^doc$
+^Meta$
+^submission/
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+makefile
