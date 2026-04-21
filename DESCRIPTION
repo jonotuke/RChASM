@@ -1,6 +1,6 @@
 Package: RChASM
 Title: Detection of Chromosomal Aneuploidies in Ancient DNA Studies
-Version: 1.0.0.9000
+Version: 1.0.1
 Authors@R: 
     c(
       person(
