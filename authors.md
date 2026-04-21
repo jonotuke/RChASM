@@ -12,6 +12,9 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/jonotuke/RChASM/blob/main/DESCRIPTION)
+
 Rohrlach A, Tuke J, Haak W (2026). *RChASM: Detection of Chromosomal
 Aneuploidies in Ancient DNA Studies*. R package version 1.0.0.9000,
 <https://jonotuke.github.io/RChASM/>.
