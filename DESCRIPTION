@@ -56,4 +56,5 @@ Suggests:
 VignetteBuilder: knitr
 Depends:
     R (>= 3.5.0)
-URL: https://jonotuke.github.io/RChASM/
+URL: https://jonotuke.github.io/RChASM/, https://github.com/jonotuke/RChASM
+BugReports: https://github.com/jonotuke/RChASM/issues
