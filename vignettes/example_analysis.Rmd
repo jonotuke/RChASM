@@ -129,7 +129,7 @@ plot_diagnostic(
 
 Note here that:
   
-  (A) Both individuals sit to the right of the XX cluster, consistent with XXX.
+(A) Both individuals sit to the right of the XX cluster, consistent with XXX.
 (B) Ind_185_1 one flag (chromosome 19) but is not "unusual", but Ind_71_1 has 4 flags and is "unusual". However, Ind_71_1 has only 76,444 reads, and the z-scores are only _just_ outside of the dashed lines. Hence, Ind_71_1 deserves careful consideration.
 (C) Both individuals to carry almost three times as much of chromosome X (275% and 296%), and virtually nothing from chromosome Y (compared to XY), consistent with XXX.
 
@@ -151,7 +151,7 @@ We note that Ind_66_1 and Ind_4_1 appear to have an XY and XX karyotype, respect
   
 ## Pre-processing your data using our script
   
-To produce the required input file for RChASM, download and use the script [CHASM_input](CHASM_input.sh) (which requires bash, perl, samtools and bedtools to be installed). The script takes as input (-i) a text file where each line is a path to a bam file, and (-o) a name for your output file. We also include a number of optional parameters for fine-tuning your analysis. These include:
+To produce the required input file for RChASM, download and use the script `CHASM_input.sh` (which requires bash, perl, samtools and bedtools to be installed). The script takes as input (-i) a text file where each line is a path to a bam file, and (-o) a name for your output file. We also include a number of optional parameters for fine-tuning your analysis. These include:
   
 - (-p) Protocol name: the name of the data generation protocol for these samples. If samples come from different protocols, we suggest running this script for each protocol separately.
 - (-b) Bed file: a bed file for restricting to reads regions of interest. This may be of use in cases where capture was used.
@@ -171,4 +171,11 @@ This can then be read into R using the _read.tsv()_ function
 
 ```{r, eval=FALSE}
 example_data <- readr::read_tsv('/path_to_folder/Output_Table.tsv')
+```
+
+The file `CHASM_input.sh` can be obtained from the package with the command:
+
+
+```{r, eval = FALSE}
+system.file("extdata", "CHASM_input.sh", package = "RChASM")
 ```

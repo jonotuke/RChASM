@@ -41,3 +41,20 @@ Also the package mclust is not importing mclustBIC automatically, so added an im
 ## Review 2026-04-22
 
 Changes to vignette based on suggestions from reviewer for associated paper to package. 
+
+Reviewer: ligges@statistik.tu-dortmund.de
+
+Got the following error:
+
+Thanks, we see:
+
+
+Found the following (possibly) invalid file URI:
+URI: CHASM_input.sh
+From: inst/doc/example_analysis.html
+
+Please fix and resubmit.
+
+I have moved the file CHASM_input.sh to extdata and changed vignette to have details on how to obtain the file using 
+
+system.file("extdata", "CHASM_input.sh", package = "RChASM")
