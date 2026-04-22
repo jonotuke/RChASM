@@ -310,12 +310,11 @@ from Ind_66_1 has behaved so strangely!
 ## Pre-processing your data using our script
 
 To produce the required input file for RChASM, download and use the
-script
-[CHASM_input](https://jonotuke.github.io/RChASM/articles/CHASM_input.sh)
-(which requires bash, perl, samtools and bedtools to be installed). The
-script takes as input (-i) a text file where each line is a path to a
-bam file, and (-o) a name for your output file. We also include a number
-of optional parameters for fine-tuning your analysis. These include:
+script `CHASM_input.sh` (which requires bash, perl, samtools and
+bedtools to be installed). The script takes as input (-i) a text file
+where each line is a path to a bam file, and (-o) a name for your output
+file. We also include a number of optional parameters for fine-tuning
+your analysis. These include:
 
 - (-p) Protocol name: the name of the data generation protocol for these
   samples. If samples come from different protocols, we suggest running
@@ -347,4 +346,11 @@ This can then be read into R using the *read.tsv()* function
 
 ``` r
 example_data <- readr::read_tsv('/path_to_folder/Output_Table.tsv')
+```
+
+The file `CHASM_input.sh` can be obtained from the package with the
+command:
+
+``` r
+system.file("extdata", "CHASM_input.sh", package = "RChASM")
 ```

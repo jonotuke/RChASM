@@ -16,13 +16,13 @@ Source:
 [`DESCRIPTION`](https://github.com/jonotuke/RChASM/blob/main/DESCRIPTION)
 
 Rohrlach A, Tuke J, Haak W (2026). *RChASM: Detection of Chromosomal
-Aneuploidies in Ancient DNA Studies*. R package version 1.0.0.9000,
+Aneuploidies in Ancient DNA Studies*. R package version 1.0.1,
 <https://jonotuke.github.io/RChASM/>.
 
     @Manual{,
       title = {RChASM: Detection of Chromosomal Aneuploidies in Ancient DNA Studies},
       author = {Adam B. Rohrlach and Jono Tuke and Wolfgang Haak},
       year = {2026},
-      note = {R package version 1.0.0.9000},
+      note = {R package version 1.0.1},
       url = {https://jonotuke.github.io/RChASM/},
     }
