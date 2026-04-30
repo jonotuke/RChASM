@@ -88,14 +88,14 @@ while getopts "i:o:p:b:w:q:l:Nh" opt; do
 			BED_EXTEND=$OPTARG
 			;;
 		q)
-			if [ ! "$OPTARG" =~ ^[0-9]+$ ] ; then
+			if [[ ! "$OPTARG" =~ ^[0-9]+$ ]] ; then
 				echo "Error: Option -q requires a positive integer number."
 				exit 2
 			fi
 			MQ=$OPTARG
 			;;
 		l)
-			if [ ! "$OPTARG" =~ ^[0-9]+$ ] ; then
+			if [[ ! "$OPTARG" =~ ^[0-9]+$ ]] ; then
 				echo "Error: Option -l requires a positive integer number."
 				exit 2
 			fi
