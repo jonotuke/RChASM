@@ -1,6 +1,7 @@
 # Example ChASM Analysis Using Example Data
 
 ``` r
+
 library(RChASM)
 library(magrittr)
 library(mclust)
@@ -54,6 +55,7 @@ set, which is loaded from the RChASM package using the *data()*
 function.
 
 ``` r
+
 data(example_data)
 ```
 
@@ -67,6 +69,7 @@ same sequencing protocol (and assigns a column with the entry
 separate analyses anyway.
 
 ``` r
+
 # An example of data that RChASM analyses (omitting columns for chromosomes 3 to 20).
 example_data %>%
   dplyr::select(sample, protocol, chr1, chr2, chr21, chr22, X, Y) %>%
@@ -128,6 +131,7 @@ karyotypes. It then merges these analyses into one result, and
 calculates the required Z-scores.
 
 ``` r
+
 example_calls <- runChASM(rawReadCountsIn = example_data)
 ```
 
@@ -163,6 +167,7 @@ encourage users to inspect this statistic in context with the z-score
 plot (see panel B in the diagnostic plots ahead).
 
 ``` r
+
 summary_calls(inChASM = example_calls, minTotal = 6e4, minPosterior = 0.95)
 #> # A tibble: 3 × 10
 #>   sample  unusual flags autosomal_call sca_call C_call autosomal_total sca_total
@@ -178,6 +183,7 @@ or set to Inf to print all lines) of the merged karyotype calls to the
 screen using the *printChASM()* function
 
 ``` r
+
 printChASM(inChASM = example_calls, lines = 10)
 #> # A tibble: 222 × 11
 #>    sample  protocol unusual flags autosomal_call sca_call C_call autosomal_total
@@ -200,6 +206,7 @@ and the entire result can be saved as a TSV (to be opened in Excel say)
 using the *saveChASM()* function,
 
 ``` r
+
 saveChASM(inChASM = example_calls)
 ```
 
@@ -208,6 +215,7 @@ alphabetically by setting the sort_by_samplename parameter to TRUE as
 follows:
 
 ``` r
+
 saveChASM(inChASM = example_calls, sort_by_samplename = TRUE)
 ```
 
@@ -217,6 +225,7 @@ We find that individual “Ind_255_1” might carry trisomy 21, and we can
 inspect this by generating a diagnostic plot.
 
 ``` r
+
 plot_diagnostic(IDs = 'Ind_255_1', inChASM = example_calls, addLabels = TRUE)
 ```
 
@@ -259,6 +268,7 @@ in the IDs input, but adding too many at once can make the plot look too
 busy).
 
 ``` r
+
 plot_diagnostic(
   IDs = c('Ind_71_1', 'Ind_185_1'),
   inChASM = example_calls,
@@ -290,6 +300,7 @@ with read counts that behave well (Ind_4_1), and an individual where the
 read counts are behaving strangely (Ind_66_1).
 
 ``` r
+
 plot_diagnostic(
   IDs = c('Ind_4_1', 'Ind_66_1'),
   inChASM = example_calls,
@@ -345,6 +356,7 @@ bash CHASM_input - i Input_Bams.txt - o Output_Table.tsv
 This can then be read into R using the *read.tsv()* function
 
 ``` r
+
 example_data <- readr::read_tsv('/path_to_folder/Output_Table.tsv')
 ```
 
@@ -352,5 +364,6 @@ The file `CHASM_input.sh` can be obtained from the package with the
 command:
 
 ``` r
+
 system.file("extdata", "CHASM_input.sh", package = "RChASM")
 ```

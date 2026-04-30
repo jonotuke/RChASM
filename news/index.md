@@ -2,6 +2,8 @@
 
 ## RChASM 1.0.1
 
+CRAN release: 2026-04-22
+
 Changed to vignette based on suggestions from reviewer for associated
 paper.
 
