@@ -5,7 +5,7 @@
 library(RChASM)
 library(magrittr)
 library(mclust)
-#> Package 'mclust' version 6.1.2
+#> Package 'mclust' version 6.1.3
 #> Type 'citation("mclust")' for citing this R package in publications.
 ```
 
