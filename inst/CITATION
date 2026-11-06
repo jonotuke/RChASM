@@ -1,0 +1,17 @@
+bibentry(
+  bibtype = "Article",
+  title="ChASM: a statistically rigorous method for the detection of chromosomal aneuploidies in ancient DNA studies",
+  author = c(
+       person(c("Adam", "B."), "Rohrlach"),
+       person("Jonathan", "Tuke"),
+       person("Kay", "Prüfer"),
+       person("Wolfgang", "Haak")
+     ),
+  journal="Bioinformatics",
+  volume="42",
+  number="5",
+  year="2026",
+  publisher="Oxford University Press",
+  doi = "10.1093/bioinformatics/btag204"
+)
+

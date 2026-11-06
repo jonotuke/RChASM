@@ -16,3 +16,5 @@ RChASM.code-workspace
 ^CRAN-SUBMISSION$
 makefile
 ^figs/
+paper.md
+rchasm.bib
