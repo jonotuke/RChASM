@@ -203,8 +203,7 @@ Once the analysis has been successfully completed, interpreting the results, and
 
 A summary of all of the results can be printed to screen using the `printChASM()` function, which by default prints twenty lines of output, but can print any number (up to the maximum number of lines) by setting the `lines` parameter. For example, the first ten lines of the full merged analysis of the example\_data can be viewed (up to the ninth column) using the following command:
 
-::: {#fig-printChasmOutput}
-
+\scriptsize
 ```r
 > printChASM(inChASM = example_calls, lines = 10)
 >    sample   protocol   unusual flags autosomal_call sca_call C_call       autosomal_total sca_total
@@ -221,9 +220,9 @@ A summary of all of the results can be printed to screen using the `printChASM()
 > 10 Ind_17_1 protocol 1 FALSE       1 No Aneuploidy  XY       No Sig XX+XY           11699     12023
 ```
 
-The result of passing the RChASM analysis of the example data to the `printChASM()` function, with only the first ten lines printed (omitting the last two columns for visualisation)\label{fig:printChasmOutput}.
+\normalsize
 
-:::
+Listing 2: The result of passing the RChASM analysis of the example data to the `printChASM()` function, with only the first ten lines printed (omitting the last two columns for visualisation)\label{fig:printChasmOutput}.
 
 
 
@@ -268,7 +267,7 @@ To generate this summary for the analysis of the example\_data, and quickly iden
 
 \normalsize
 
-Listing 2: An overall summary of the uncommon karyotypes found by passing the RChASM analysis of the example data to the `summary_calls()` function. Note that, although these columns are omitted for readability, all three individuals have a posterior probability assigned with their autosomal and sex chromosomal karyotypes of one (to machine precision)\label{fig:summary_callsOutput}.
+Listing 3: An overall summary of the uncommon karyotypes found by passing the RChASM analysis of the example data to the `summary_calls()` function. Note that, although these columns are omitted for readability, all three individuals have a posterior probability assigned with their autosomal and sex chromosomal karyotypes of one (to machine precision)\label{fig:summary_callsOutput}.
 
 
 We now investigate these two cases of XXX syndrome (Ind\_71\_1 and Ind\_185\_1) and one case of trisomy 21 (Ind\_255\_1) looking at the summary statistics and diagnostic plots for goodness-of-fit.

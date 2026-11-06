@@ -628,9 +628,7 @@ setting the \texttt{lines} parameter. For example, the first ten lines
 of the full merged analysis of the example\_data can be viewed (up to
 the ninth column) using the following command:
 
-\begin{figure}
-
-\centering{
+\scriptsize
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -650,14 +648,12 @@ the ninth column) using the following command:
 \end{Highlighting}
 \end{Shaded}
 
-}
+\normalsize
 
-\caption{\label{fig-printChasmOutput}The result of passing the RChASM
-analysis of the example data to the \texttt{printChASM()} function, with
-only the first ten lines printed (omitting the last two columns for
-visualisation)\label{fig:printChasmOutput}.}
-
-\end{figure}%
+Listing 2: The result of passing the RChASM analysis of the example data
+to the \texttt{printChASM()} function, with only the first ten lines
+printed (omitting the last two columns for
+visualisation)\label{fig:printChasmOutput}.
 
 This output can be saved as a TSV by passing the full analysis to the
 \texttt{saveChASM()} function, and can be sorted by sample name. To save
@@ -739,8 +735,6 @@ To generate this summary for the analysis of the example\_data, and
 quickly identify the three individuals with uncommon karyotypes, we use
 the following command:
 
-\tiny
-\scriptsize
 \footnotesize
 
 \begin{Shaded}
@@ -756,7 +750,7 @@ the following command:
 
 \normalsize
 
-Listing 2: An overall summary of the uncommon karyotypes found by
+Listing 3: An overall summary of the uncommon karyotypes found by
 passing the RChASM analysis of the example data to the
 \texttt{summary\_calls()} function. Note that, although these columns
 are omitted for readability, all three individuals have a posterior
