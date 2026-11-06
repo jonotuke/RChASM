@@ -13,16 +13,20 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jonotuke/RChASM/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/jonotuke/RChASM/blob/main/inst/CITATION)
 
-Rohrlach A, Tuke J, Haak W (2026). *RChASM: Detection of Chromosomal
-Aneuploidies in Ancient DNA Studies*. R package version 1.0.1,
-<https://jonotuke.github.io/RChASM/>.
+Rohrlach AB, Tuke J, Prüfer K, Haak W (2026). “ChASM: a statistically
+rigorous method for the detection of chromosomal aneuploidies in ancient
+DNA studies.” *Bioinformatics*, **42**(5).
+[doi:10.1093/bioinformatics/btag204](https://doi.org/10.1093/bioinformatics/btag204).
 
-    @Manual{,
-      title = {RChASM: Detection of Chromosomal Aneuploidies in Ancient DNA Studies},
-      author = {Adam B. Rohrlach and Jono Tuke and Wolfgang Haak},
+    @Article{,
+      title = {ChASM: a statistically rigorous method for the detection of chromosomal aneuploidies in ancient DNA studies},
+      author = {Adam B. Rohrlach and Jonathan Tuke and Kay Prüfer and Wolfgang Haak},
+      journal = {Bioinformatics},
+      volume = {42},
+      number = {5},
       year = {2026},
-      note = {R package version 1.0.1},
-      url = {https://jonotuke.github.io/RChASM/},
+      publisher = {Oxford University Press},
+      doi = {10.1093/bioinformatics/btag204},
     }
