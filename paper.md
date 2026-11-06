@@ -255,6 +255,8 @@ Further filtering for samples and changes to the output columns can be done with
 
 To generate this summary for the analysis of the example\_data, and quickly identify the three individuals with uncommon karyotypes, we use the following command:
 
+\footnotesize
+
 ```r
 > summary_calls(inChASM = example_calls)
 >   sample    unusual flags autosomal_call sca_call C_call       autosomal_total sca_total
@@ -263,6 +265,8 @@ To generate this summary for the analysis of the example\_data, and quickly iden
 > 2 Ind_185_1 FALSE   1     No Aneuploidy  XXX      No Sig XX+XY 209933          225713
 > 3 Ind_255_1 FALSE   0     Trisomy 21     XX       No Sig XX+XY 254544          268132
 ```
+
+\normalsize
 
 Listing 2: An overall summary of the uncommon karyotypes found by passing the RChASM analysis of the example data to the `summary_calls()` function. Note that, although these columns are omitted for readability, all three individuals have a posterior probability assigned with their autosomal and sex chromosomal karyotypes of one (to machine precision)\label{fig:summary_callsOutput}.
 
