@@ -1,5 +1,5 @@
 ---
-title: 'RChASM: An R Package for Identifying Nonmosaic Whole-chromosome Aneuploidies from Low-coverage Sequence Data'
+title: 'RChASM: An R Package for Identifying Non-mosaic Whole-chromosome Aneuploidies from Low-coverage Sequence Data'
 tags:
   - R
   - ancient DNA
@@ -11,6 +11,7 @@ authors:
   - name: Adam B. Rohrlach
     orcid: 0000-0002-4204-5018
     affiliation: "1, 2"
+    corresponding: true
   - name: Jonathan Tuke
     orcid: 0000-0002-1688-8951
     affiliation: 3
@@ -42,7 +43,7 @@ keep-tex: true
 }
 
 # Summary
-A (non-mosaic) chromosomal aneuploidy is defined as the presence of an abnormal number of chromosomes, deviating from the common 46 [@orr2015aneuploidy]. These aneuploidies represent one of the most common causes of large-scale genetic abnormality, frequently resulting in spontaneous miscarriage[@hassold2001err]. Autosomal aneuploidies specifically affect chromosomes 1 to 22, occur in approximately one in 800 live births [@nagaoka2012human], and are  termed a monosomy or trisomy when there is a loss or gain of a copy of a chromosome, respectively [@orr2015aneuploidy]. All autosomal trisomies, except for trisomies 13 (Patau syndrome), 18 (Edwards syndrome) or 21 (Down syndrome), lead to embryonic or fetal loss, however trisomies 13 and 18 remain associated with high rates of prenatal loss and severely limited postnatal life expectancy. Sex chromosomal aneuploidies affect only the X and Y chromosomes, with XXY (Klinefelter syndrome), XYY (Jacobs syndrome), XXX (Triple X syndrome) and X0 (Turner syndrome) being the most common karyotypes, are more common, occurring in approximately one in 450 live births [@samango2013snp]. The phenotypic traits associated with sex chromosomal aneuploidies are much milder than those associated with autosomal aneuploidies, so much so that they often go unnoticed and hence undiagnosed, but can still lead to developmental issues and increased disease risk factors [@skuse2018sex,hong2014cognitive]. 
+A (non-mosaic) chromosomal aneuploidy is defined as the presence of an abnormal number of chromosomes, deviating from the common 46 [@orr2015aneuploidy]. These aneuploidies represent one of the most common causes of large-scale genetic abnormality, frequently resulting in spontaneous miscarriage[@hassold2001err]. Autosomal aneuploidies specifically affect chromosomes 1 to 22, occur in approximately one in 800 live births [@nagaoka2012human], and are  termed a monosomy or trisomy when there is a loss or gain of a copy of a chromosome, respectively [@orr2015aneuploidy]. All autosomal trisomies, except for trisomies 13 (Patau syndrome), 18 (Edwards syndrome) or 21 (Down syndrome), lead to embryonic or fetal loss, however trisomies 13 and 18 remain associated with high rates of prenatal loss and severely limited postnatal life expectancy. Sex chromosomal aneuploidies affect only the X and Y chromosomes, with XXY (Klinefelter syndrome), XYY (Jacobs syndrome), XXX (Triple X syndrome) and X0 (Turner syndrome) being the most common karyotypes, and are more common, occurring in approximately one in 450 live births [@samango2013snp]. The phenotypic traits associated with sex chromosomal aneuploidies are much milder than those associated with autosomal aneuploidies, so much so that they often go unnoticed and hence undiagnosed, but can still lead to developmental issues and increased disease risk factors [@skuse2018sex; @hong2014cognitive]. 
 
 Here we present the R-package `RChASM` (the **R**-implementation of the **Ch**romosomal **A**neuploidy **S**creening **M**ethodology framework), which implements the concepts introduced by ChASM [@rohrlach2026chasm]: an R-package for identifying chromosomal aneuploidies in low-coverage ancient DNA data sets. `RChASM` utilises a Dirichlet-multinomial distribution, trained on a reference set of "similar" DNA sequence data, to model the proportion of reads mapping to each chromosome. Due to this reference distribution, `RChASM` returns posterior probabilities for the autosomal karyotypes trisomies 13, 18 and 21 (or no autosomal aneuploidy), as well as sex chromosomal karyotypes  XX, XY, XXY, XYY, XXX and X0. `RChASM` also produces diagnostic plots and statistics for diagnosing fit to the reference distribution or whether contamination is driving karyotype assignment. Our approach allows ancient DNA researchers to confidently assign autosomal and sex chromosomal karyotypes for data with as few as 60,000 mapped reads, or approximately 0.001X mean coverage.
 
@@ -99,7 +100,7 @@ $$
 \bm{\alpha}^{\bm{c}^*} = \left[ k_i \alpha_i \right].
 $$
 
-We can now calculate the probability of observing the read count distribution $\bm{N}_j$ that we see, given the karyotype $\bm{c}^* \in \bm{\kappa}$, denoted $P\left( \bm{N}_j \big\vert \bm{\alpha}, \bm{c}^* \right)$.
+We can now calculate the probability of observing the read count distribution $\bm{N}_j$ that we see, given the karyotype $\bm{c}^*$, denoted $P\left( \bm{N}_j \big\vert \bm{\alpha}, \bm{c}^* \right)$.
 
 Hence, posterior probabilities can be calculated for each karyotype of interest of the form
 
@@ -175,11 +176,11 @@ Once your read counts have been read into R as a data frame or tibble, a full sc
 | **Parameter**         | **Default**        | **Description** |
 |-----------------------|--------------------|-----------------|
 | minSamplesPerProtocol | 30                 | The minimum number of samples *per protocol*. Cannot be less than 23. |
-| min_reads             | $6\times 10^{4}$   | The minimum number of total mapped reads for a sample to be used in the Dirichlet-multinomial parameter estimation |
-| max_reads             | $1\times 10^{9}$   | The maximum number of total reads for a sample to be used in the Dirichlet-multinomial parameter estimation |
-| p_contamination       | 0.01               | The prior probability of a sample containing both XX and XY reads due to contamination |
-| show_plot             | `TRUE`             | A boolean variable for whether to show (`TRUE`) or not to show (`FALSE`) the clustering results for the sex chromosomal training set |
-| printMissingIDs       | `FALSE`            | When merging the autosomal and sex chromosomal analyses, should missing IDs be printed (`TRUE`) or returned as a count (`FALSE`) |
+| min_reads             | $6\times 10^{4}$   | The minimum number of total mapped reads for a sample to be used in the Dirichlet-multinomial parameter estimation. |
+| max_reads             | $1\times 10^{9}$   | The maximum number of total reads for a sample to be used in the Dirichlet-multinomial parameter estimation. |
+| p_contamination       | 0.01               | The prior probability of a sample containing both XX and XY reads due to contamination. |
+| show_plot             | `TRUE`             | A boolean variable for whether to show (`TRUE`) or not to show (`FALSE`) the clustering results for the sex chromosomal training set. |
+| printMissingIDs       | `FALSE`            | When merging the autosomal and sex chromosomal analyses, should missing IDs be printed (`TRUE`) or returned as a count (`FALSE`). |
 
 : Descriptions of parameters with default values for the `runChASM()` function.\label{tab:runChASM}
 
@@ -243,10 +244,10 @@ Further filtering for samples and changes to the output columns can be done with
 
 | Parameter      | Default           | Description |
 |----------------|-------------------|-------------|
-| minTotal       | $6\times 10^{4}$  | The minimum number of reads for a sample to be included in the summary output |
-| minPosterior   | $0.95$            | The minimum posterior probability for a result to be included in the summary output |
-| ignoreUnusual  | `FALSE`           | A boolean variable indicating if samples with a significant goodness-of-fit statistic $\lambda_j$ should be displayed (`FALSE`) or omitted (`TRUE`) in the summary output |
-| printProtocol  | `FALSE`           | A boolean variable indicating if the protocol needs to be included (`TRUE`) or not (`FALSE`) in the summary output |
+| minTotal       | $6\times 10^{4}$  | The minimum number of reads for a sample to be included in the summary output. |
+| minPosterior   | $0.95$            | The minimum posterior probability for a result to be included in the summary output. |
+| ignoreUnusual  | `FALSE`           | A boolean variable indicating if samples with a significant goodness-of-fit statistic $\lambda_j$ should be displayed (`FALSE`) or omitted (`TRUE`) in the summary output. |
+| printProtocol  | `FALSE`           | A boolean variable indicating if the protocol needs to be included (`TRUE`) or not (`FALSE`) in the summary output. |
 
 : Descriptions of parameters with default values for the `summary_calls()` function\label{tab:summary_calls}.
 
@@ -276,7 +277,7 @@ We now investigate these two cases of XXX syndrome (Ind\_71\_1 and Ind\_185\_1) 
 
 If an uncommon karyotype is detected in an individual, goodness-of-fit should be considered. First, it should be decided if the sample even matches the reference distribution well enough to be able to use the posterior probability. To do this we consider two things: the significance of the goodness-of-fit statistic $\lambda_j$, and the number of significant Z-scores for the autosomes (denoted `flags` in the `RChASM` output summary). The chromosome associated with significant Z-scores can be identified via the diagnostic plot (panel B, \autoref{fig:diagnosticT21}) as the points lying outside of the dashed lines, which represent two standard deviations from the expected value.
 
-Note that with 22 chromosomes, we expect at least one significant Z-score by chance. We also find through simulations that $\lambda_j$ can be quite sensitive [@rohrlach2026chasm] to even small perturbations to the read count distribution. Hence, we suggest considering a sample poorly fit if $\lambda_j$ is significant (``unusual'' is `TRUE`) and if flags $\geq3$.
+Note that with 22 chromosomes, we expect at least one significant Z-score by chance. We also find through simulations that $\lambda_j$ can be quite sensitive [@rohrlach2026chasm] to even small perturbations to the read count distribution. Hence, we suggest considering a sample poorly fit if $\lambda_j$ is significant ("unusual" is TRUE) and if flags $\geq3$.
 
 Second, it must be considered if the loss or gain in reads to the target chromosome makes sense in context. For example, if we observe a trisomy 21, then 50\% more reads should be mapping to chromosome 21 than for the average sample. The diagnostic displays this information for sex chromosomal karyotypes via a scatter plot of the X- and Y-rate of the target individual(s), with a random sample of reference individuals for comparison (panel A, \autoref{fig:diagnosticT21}). This can also be seen in the fold-increase panel which shows the percentage change in observed read counts compared to the expected value for an XY individual (panel C, \autoref{fig:diagnosticT21}). 
 
